@@ -1,5 +1,7 @@
 # Page Capture (by Yieldbot)
 
+[![Build Status](https://travis-ci.org/yieldbot/page_capture.svg?branch=master)](https://travis-ci.org/yieldbot/page_capture)
+
 A [Chrome Extension](https://developer.chrome.com/extensions) that allows page capturing from within your UI Application.
 
 ### API (TODO - hook up jsdoc)
