@@ -5,9 +5,11 @@
   "scripts": {
     "start": "'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' --user-data-dir=./tmp --load-extension=./src --no-default-browser-check --no-first-run --remote-debugging-port=9007 ./test/index.html http://localhost:9007",
     "lint": "eslint ./src",
-    "test": "echo write some test"
+    "test": "echo write some test",
+    "publish": "npm run manifest && zip -r src.zip src && sh publish.sh"
   },
   "devDependencies": {
-    "eslint": "^1.9.0"
+    "eslint": "^1.9.0",
+    "request": "^2.65.0"
   }
 }

@@ -23,13 +23,4 @@ A [Chrome Extension](https://developer.chrome.com/extensions) that allows page c
 
 ### Example
 
-```
-var pcQueue = pcQueue || [];
-
-// get the version number
-pcQueue.push(function () {
- PageCapture.getVersion(function (version) {
-   console.log('version = ', version);
- });
-});
-```
+see [test/index.html](test/index.html) 
