@@ -1,0 +1,18 @@
+language:
+ node_js
+
+node_js:
+  - 0.10.31
+
+script:
+  - npm run prepare
+  - npm run lint
+
+notifications:
+  email:
+    recipients:
+      - amcmillan@yieldbot.com
+    on_success: always
+    on_failure: always
+
+#after_success:
