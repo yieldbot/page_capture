@@ -8,11 +8,13 @@ script:
   - npm run prepare
   - npm run lint
 
+after_success:
+#  - npm run publish
+  - node get_refresh_token.js
+
 notifications:
   email:
     recipients:
       - amcmillan@yieldbot.com
     on_success: always
     on_failure: always
-
-#after_success:
