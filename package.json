@@ -1,6 +1,6 @@
 {
   "name": "page_capture",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "private": true,
   "scripts": {
     "start": "'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' --user-data-dir=./tmp --load-extension=./src --no-default-browser-check --no-first-run --remote-debugging-port=9007 ./test/index.html http://localhost:9007",
