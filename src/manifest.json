@@ -1,7 +1,7 @@
 {
   "name": "Page Capture (by Yieldbot)",
   "description": "A Chrome Extension that allows page capturing from within your UI Application.",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "manifest_version": 2,
   "author": "Andrei McMillan <amcmillan@yieldbot.com>",
   "icons": {
