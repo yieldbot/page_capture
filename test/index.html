@@ -38,10 +38,6 @@
           console.log('version 1', v);
         });
 
-        PageCapture.getVersion(function(v) {
-          console.log('version 2', v);
-        });
-
         document.getElementById('pc_box1').onclick = function() {
           PageCapture.captureElement('#box1', function(img){
             console.log('img >>>', img);
