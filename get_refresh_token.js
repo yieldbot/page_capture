@@ -16,11 +16,21 @@ var oauth = {
   client_secret: process.env.CLIENT_SECRET
 };
 
-request.post({url: 'https://www.googleapis.com/oauth2/v3/token', oauth: oauth}, function(err, res, body) {
+var fields = '';
+for (var p in oauth) {
+  fields += p + '=' + oauth[p] + '&';
+}
+
+request.post('https://www.googleapis.com/oauth2/v3/token?' + fields, function(err, res, body) {
   if (err) {
     console.log(err);
     process.exit(1);
   } else {
-    console.log('body', body);
+    try {
+      console.log(JSON.parse(body).access_token);
+    } catch (e) {
+      console.log(e);
+      process.exit(1);
+    }
   }
 });

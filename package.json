@@ -1,12 +1,14 @@
 {
   "name": "page_capture",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "private": true,
   "scripts": {
     "start": "'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' --user-data-dir=./tmp --load-extension=./src --no-default-browser-check --no-first-run --remote-debugging-port=9007 ./test/index.html http://localhost:9007",
     "lint": "eslint ./src",
     "test": "echo write some test",
-    "publish": "npm run manifest && zip -r src.zip src && sh publish.sh"
+    "precut_release": "node update_manifest_version.js && git commit . -m 'cut new release'",
+    "cut_release": "git tag v`node -e 'console.log(require(\"./package.json\").version)'`",
+    "postcut_release": "npm --no-git-tag-version version patch && git commit . -m 'version bump'"
   },
   "devDependencies": {
     "eslint": "^1.9.0",

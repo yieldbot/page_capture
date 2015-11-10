@@ -13,12 +13,12 @@ A [Chrome Extension](https://developer.chrome.com/extensions) that allows page c
 
 ### Deploy Process
 
-- npm run cut_deploy
+- npm run cut_release
 - git fetch
 - git rebase
 - git push
 - git push origin --tags
-- check the travis build
+- check the [travis build](https://travis-ci.org/yieldbot/page_capture)
 
 
 ### Example
