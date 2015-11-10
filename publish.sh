@@ -15,28 +15,18 @@ if [ $EXIT_CODE == '0' ]
 
     TOKEN=`node get_refresh_token.js`
     EXIT_CODE=$?
+    UPLOAD_URL="https://www.googleapis.com/upload/chromewebstore/v1.1/items/$APP_ID"
+    PUBLISH_URL="https://www.googleapis.com/chromewebstore/v1.1/items/$APP_ID/publish"
 
-    echo "TOKEN = $TOKEN "
+    echo "[$EXIT_CODE] : $TOKEN "
 
     if [ $EXIT_CODE == '0' ]
       then
         # Uploading a package to update an existing store item
-        curl \
-        -H "Authorization: Bearer $TOKEN"  \
-        -H "x-goog-api-version: 2" \
-        -X PUT \
-        -T src.zip \
-        -s \
-        https://www.googleapis.com/upload/chromewebstore/v1.1/items/$APP_ID
+        curl -H "Authorization: Bearer $TOKEN" -H "x-goog-api-version: 2" -X PUT -T src.zip -s $UPLOAD_URL
 
         #Publishing an item to the public
-        curl \
-        -H "Authorization: Bearer $TOKEN"  \
-        -H "x-goog-api-version: 2" \
-        -H "Content-Length: 0" \
-        -X POST \
-        -s \
-        https://www.googleapis.com/chromewebstore/v1.1/items/$APP_ID/publish
+        curl -H "Authorization: Bearer $TOKEN" -H "x-goog-api-version: 2" -H "Content-Length: 0" -X POST -s $PUBLISH_URL
     fi
 
 fi
