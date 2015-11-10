@@ -9,7 +9,7 @@ script:
   - npm run lint
 
 after_success:
-  - sh publish.sh
+  - bash publish.sh
 
 notifications:
   email:
