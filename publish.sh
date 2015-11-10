@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 
 # reference: https://developer.chrome.com/webstore/using_webstore_api
 
