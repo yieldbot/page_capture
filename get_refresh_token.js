@@ -23,13 +23,14 @@ for (var p in oauth) {
 
 request.post('https://www.googleapis.com/oauth2/v3/token?' + fields, function(err, res, body) {
   if (err) {
-    console.log(err);
+    console.log('REFRESH_ERROR.1', err);
     process.exit(1);
   } else {
     try {
       console.log(JSON.parse(body).access_token);
+      process.exit();
     } catch (e) {
-      console.log(e);
+      console.log('REFRESH_ERROR.2', e);
       process.exit(1);
     }
   }
