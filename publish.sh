@@ -23,10 +23,13 @@ if [ $EXIT_CODE == '0' ]
     if [ $EXIT_CODE == '0' ]
       then
         # Uploading a package to update an existing store item
+        echo "upload new package to webstore"
         curl -H "Authorization: Bearer $TOKEN" -H "x-goog-api-version: 2" -X PUT -T src.zip -s $UPLOAD_URL
 
+        echo "publish package to webstore"
         #Publishing an item to the public
         curl -H "Authorization: Bearer $TOKEN" -H "x-goog-api-version: 2" -H "Content-Length: 0" -X POST -s $PUBLISH_URL
+        echo "done publishing"
     fi
-
+    echo "done..."
 fi
