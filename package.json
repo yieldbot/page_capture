@@ -1,5 +1,6 @@
 {
   "name": "page_capture",
+  "description": "A Chrome Extension that allows page capturing from within your Web Application",
   "version": "0.0.2",
   "private": true,
   "scripts": {
