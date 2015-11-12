@@ -1,6 +1,7 @@
 # Page Capture (by Yieldbot)
 
 [![Build Status](https://travis-ci.org/yieldbot/page_capture.svg?branch=master)](https://travis-ci.org/yieldbot/page_capture)
+[![GitHub version](https://badge.fury.io/gh/yieldbot%2Fpage_capture.svg)](https://badge.fury.io/gh/yieldbot%2Fpage_capture)
 
 A [Chrome Extension](https://chrome.google.com/webstore/detail/page-capture-by-yieldbot/jalljeamdfcpcigocpbgfbebdjfmpdof) that allows page capturing from within your Web Application.
 
