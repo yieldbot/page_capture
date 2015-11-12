@@ -33,7 +33,12 @@
     <div>
       <button id="pc_box1">capture box 1</button>
       <button id="pc_page">capture page</button>
+    </div>
+    <div>
       <input id="section" placeholder="x,y"><button id="pc_section">capture section</button>
+    </div>
+    <div>
+      <input id="image_url" placeholder="http://"><button id="pc_image">capture image</button>
     </div>
 
     <div id="result"></div>
@@ -63,6 +68,13 @@
         document.getElementById('pc_section').onclick = function() {
           var val = document.getElementById('section').value.trim().split(',');
           PageCapture.captureSection(val[0], val[1], 300, 250, function(img) {
+            result.innerHTML = '<img src="' + img + '">';
+          });
+        };
+
+        document.getElementById('pc_image').onclick = function() {
+          var url = document.getElementById('image_url').value;
+          PageCapture.captureImage(url, 300, 250, function(img) {
             result.innerHTML = '<img src="' + img + '">';
           });
         };

@@ -7,7 +7,6 @@
 
 /* exported PageCapture */
 
-
 var pcQueue = pcQueue || [];
 
 // public api
@@ -97,6 +96,46 @@ var PageCapture = {};
       height: height
     };
     send('captureSection', opt, cb);
+  };
+
+  /**
+   *
+   * @param {string} imgUrl
+   * @param {number} width
+   * @param {number} height
+   * @param {function} cb
+   */
+  PageCapture.captureImage = function(imgUrl, width, height, cb){
+    var img = document.getElementById('__pc_image_');
+
+    if(!img){
+      img = new Image();
+      img.id = '__pc_image_';
+      img.style.position = 'fixed';
+      img.style.top = '10px';
+      img.style.left = '10px';
+    }
+
+    img.style.display = 'block';
+
+    img.onload = function() {
+      document.body.appendChild(img);
+      setTimeout(function(){
+        PageCapture.captureElement('#__pc_image_', function(imgData) {
+          cb(imgData);
+          img.style.display = 'none';
+        });
+      }, 300);
+    };
+
+    if (width) {
+      img.width = width;
+    }
+    if (height) {
+      img.height = height;
+    }
+
+    img.src = imgUrl;
   };
 
   // process the queue
