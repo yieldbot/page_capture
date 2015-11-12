@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/yieldbot/page_capture.svg?branch=master)](https://travis-ci.org/yieldbot/page_capture)
 
-A [Chrome Extension](https://developer.chrome.com/extensions) that allows page capturing from within your Web Application.
+A [Chrome Extension](https://chrome.google.com/webstore/detail/page-capture-by-yieldbot/jalljeamdfcpcigocpbgfbebdjfmpdof) that allows page capturing from within your Web Application.
 
 ### API (TODO - hook up jsdoc)
 
