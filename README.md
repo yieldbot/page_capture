@@ -24,3 +24,9 @@ A [Chrome Extension](https://chrome.google.com/webstore/detail/page-capture-by-y
 ### Example
 
 see [test/index.html](test/index.html) 
+
+### License
+
+Licensed under The MIT License (MIT)
+
+For the full copyright and license information, please view the LICENSE.txt file.
