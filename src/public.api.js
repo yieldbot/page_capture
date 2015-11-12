@@ -36,14 +36,30 @@ var PageCapture = {};
   };
 
   /**
+   *
+   * @param {string} api
+   * @param {object} opt
+   * @param {function} cb
+   * @return {undefined}
+   */
+  var send = function(api, opt, cb){
+    opt.ns = 'page_capture';
+    opt.api = api;
+    opt.__index = index;
+    callbacks[index] = cb;
+
+    window.postMessage(opt, '*');
+    index++;
+  };
+
+  /**
    * get the version
    * @param {function} cb
    * @return {undefined}
    */
   PageCapture.getVersion = function (cb) {
-    callbacks[index] = cb;
-    window.postMessage({api: 'PageCapture.getVersion', __index: index}, '*');
-    index++;
+    var opt = {};
+    send('getVersion', opt, cb);
   };
 
   /**
@@ -52,19 +68,35 @@ var PageCapture = {};
    * @param {function} cb
    */
   PageCapture.captureElement = function (element, cb) {
-    callbacks[index] = cb;
-    window.postMessage({api: 'PageCapture.captureElement', __index: index, element: element}, '*');
-    index++;
+    var opt = {element: element};
+    send('captureElement', opt, cb);
   };
 
   /**
-   * take snapshots of a give url
+   * take snapshots of a given url
    * @param {function} cb
    */
   PageCapture.capturePage = function (cb) {
-    callbacks[index] = cb;
-    window.postMessage({api: 'PageCapture.capturePage', __index: index}, '*');
-    index++;
+    var opt = {};
+    send('capturePage', opt, cb);
+  };
+
+  /**
+   * take snapshots of a section on a given url
+   * @param {number} x
+   * @param {number} y
+   * @param {number} width
+   * @param {number} height
+   * @param {function} cb
+   */
+  PageCapture.captureSection = function (x, y, width, height, cb) {
+    var opt = {
+      x: x,
+      y: y,
+      width: width,
+      height: height
+    };
+    send('captureSection', opt, cb);
   };
 
   // process the queue

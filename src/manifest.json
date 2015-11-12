@@ -32,6 +32,6 @@
     }
   ],
   "web_accessible_resources": [
-    "content.script.api.js"
+    "public.api.js"
   ]
 }

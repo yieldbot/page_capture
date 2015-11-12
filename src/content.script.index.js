@@ -7,9 +7,33 @@
 
 'use strict';
 
-(function () {
+(function() {
   var mainfest = chrome.runtime.getManifest();
-  console.log('manifest', mainfest);
+
+  /**
+   *
+   * @param {string} imageBase64
+   * @param {number} x
+   * @param {number} y
+   * @param {number} width
+   * @param {number} height
+   * @param {function} cb
+   * @return {undefined}
+   */
+  var crop = function(imageBase64, x, y, width, height, cb) {
+    var img = new Image();
+    img.onload = function() {
+      var canvas = document.createElement('canvas');
+      var canvasContext = canvas.getContext('2d');
+      canvas.width = width;
+      canvas.height = height;
+
+      canvasContext.drawImage(img, x, y, width, height, 0, 0, width, height);
+
+      cb(canvas.toDataURL());
+    };
+    img.src = imageBase64;
+  };
 
   /**
    *
@@ -17,10 +41,10 @@
    * @param {function} callback
    * @return {undefined}
    */
-  var screenCaptureHandler = function (selectors, callback) {
+  var screenCaptureHandler = function(selectors, callback) {
     var target = document.querySelector(selectors);
 
-    if(!target){
+    if (!target) {
       callback(null);
     } else {
 
@@ -35,52 +59,58 @@
       setTimeout(function() {
         offset = target.getBoundingClientRect();
         chrome.runtime.sendMessage({option: 'screenCapture'}, function(dataUrl) {
-          var img = new Image();
-          img.onload = function() {
-            var canvas = document.createElement('canvas');
-            var canvasContext = canvas.getContext('2d');
-            canvas.width = offset.width;
-            canvas.height = offset.height;
-
-            canvasContext.drawImage(img, offset.left, offset.top, offset.width, offset.height, 0, 0, offset.width, offset.height);
-
-            var content = canvas.toDataURL();//'image/jpeg', 1.0);
-
-            callback(content);
-          };
-          img.src = dataUrl;
+          crop(dataUrl, offset.left, offset.top, offset.width, offset.height, callback);
         });
       }, waitFor);
     }
   };
 
   // listen to messages from clients using the the public api's
-  window.addEventListener('message', function (event) {
-    if (event.data.__index && typeof event.data === 'object' && typeof event.data.api === 'string') {
-      console.log('page_capture api', event.data.api);
+  window.addEventListener('message', function(event) {
+    var data = event.data || {};
 
-      if (event.data.api === 'PageCapture.getVersion') {
-        window.postMessage({__key: event.data.__index, value: mainfest.version}, '*');
-      }
+    if (!data.__index || !data.ns || !data.api) {
+      return;
+    }
 
-      else if (event.data.api === 'PageCapture.captureElement') {
-        screenCaptureHandler(event.data.element, function (data) {
-          window.postMessage({__key: event.data.__index, value: data}, '*');
-        });
-      }
+    var send = function(value) {
+      var opt = {
+        __key: data.__index,
+        value: value
+      };
+      window.postMessage(opt, '*');
+    };
 
-      else if (event.data.api === 'PageCapture.capturePage') {
-        chrome.runtime.sendMessage({option: 'screenCapture'}, function (dataUrl) {
-          window.postMessage({__key: event.data.__index, value: dataUrl}, '*');
-          return true;
-        });
-      }
+    console.log('page_capture api', data.api);
+
+    if (data.api === 'getVersion') {
+      send(mainfest.version);
+    }
+
+    else if (data.api === 'captureElement') {
+      screenCaptureHandler(data.element, function(data) {
+        send(data);
+      });
+    }
+
+    else if (data.api === 'capturePage') {
+      chrome.runtime.sendMessage({option: 'screenCapture'}, function(dataUrl) {
+        send(dataUrl);
+        return true;
+      });
+    }
+
+    else if (data.api === 'captureSection') {
+      chrome.runtime.sendMessage({option: 'screenCapture'}, function(dataUrl) {
+        crop(dataUrl, data.x, data.y, data.width, data.height, send);
+        return true;
+      });
     }
   });
 
   // inject the api script in the current page document
   var apiScript = document.createElement('script');
-  apiScript.src = chrome.extension.getURL('content.script.api.js');
+  apiScript.src = chrome.extension.getURL('public.api.js');
   apiScript.type = 'text/javascript';
   document.body.appendChild(apiScript);
 

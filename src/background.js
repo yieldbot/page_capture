@@ -8,11 +8,11 @@
 'use strict';
 
 // listen for any changes to the URL of any tab.
-chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
-  if (changeInfo.status === 'complete') {
-    console.log('>>>', changeInfo, tab);
-  }
-});
+//chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
+//  if (changeInfo.status === 'complete') {
+//    console.log('>>>', changeInfo, tab);
+//  }
+//});
 
 // Receive message from content script
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {

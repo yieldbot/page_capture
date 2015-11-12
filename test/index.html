@@ -5,7 +5,6 @@
     <title></title>
     <style type="text/css">
       #box1 {
-        /*position: absolute;*/
         top: 50px;
         left: 60px;
         width: 200px;
@@ -15,38 +14,56 @@
         margin: 10px;
         overflow: hidden;
       }
+
+      #result {
+        margin: 10px;
+        padding: 10px;
+        border: 1px solid green;
+      }
     </style>
   </head>
   <body>
 
     <div id="box1">
       <h1>Title Box 1</h1>
+
       <p style="color: red;">This will be in the page capture...</p>
     </div>
 
     <div>
       <button id="pc_box1">capture box 1</button>
       <button id="pc_page">capture page</button>
+      <input id="section" placeholder="x,y"><button id="pc_section">capture section</button>
     </div>
+
+    <div id="result"></div>
 
     <script type="text/javascript">
       var pcQueue = pcQueue || [];
+      var result = document.getElementById('result');
 
       pcQueue.push(function() {
 
         PageCapture.getVersion(function(v) {
-          console.log('version 1', v);
+          result.innerHTML = 'version = ' + v;
         });
 
         document.getElementById('pc_box1').onclick = function() {
-          PageCapture.captureElement('#box1', function(img){
-            console.log('img >>>', img);
+          PageCapture.captureElement('#box1', function(img) {
+            result.innerHTML = '<img src="' + img + '">';
           });
         };
 
         document.getElementById('pc_page').onclick = function() {
-          PageCapture.capturePage(function(img){
-            console.log('img >>>', img);
+          PageCapture.capturePage(function(img) {
+            result.innerHTML = '<img src="' + img + '">';
+          });
+        };
+
+        document.getElementById('pc_section').onclick = function() {
+          var val = document.getElementById('section').value.trim().split(',');
+          PageCapture.captureSection(val[0], val[1], 300, 250, function(img) {
+            result.innerHTML = '<img src="' + img + '">';
           });
         };
 
