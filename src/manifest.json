@@ -32,6 +32,8 @@
     }
   ],
   "web_accessible_resources": [
-    "public.api.js"
+    "public.api.js",
+    "logo.png",
+    "control_panel.html"
   ]
 }

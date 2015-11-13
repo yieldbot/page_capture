@@ -12,6 +12,7 @@ A [Chrome Extension](https://chrome.google.com/webstore/detail/page-capture-by-y
 - `captureElement(elementId, [url])`: capture an element on a given url
 - `captureSection(x, y, width, height, [url])`: capture a section a given url
 - `captureImage(imgUrl, width, height, cb)`: capture an external image
+- `captureUrl(url, cb)`: capture an external page
 
 ### Deploy Process
 

@@ -138,6 +138,18 @@ var PageCapture = {};
     img.src = imgUrl;
   };
 
+  /**
+   *
+   * @param {string} url
+   * @param {function} cb
+   */
+  PageCapture.captureUrl = function(url, cb){
+    var opt = {
+      url: url
+    };
+    send('captureUrl', opt, cb);
+  };
+
   // process the queue
   if (Array.isArray(pcQueue)) {
     pcQueue.forEach(runCmd);
