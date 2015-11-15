@@ -141,12 +141,21 @@ var PageCapture = {};
   /**
    *
    * @param {string} url
+   * @param {string} [imgUrl]
    * @param {function} cb
    */
-  PageCapture.captureUrl = function(url, cb){
+  PageCapture.captureUrl = function(url, imgUrl, cb){
+
+    if(typeof arguments[1] === 'function'){
+      cb = imgUrl;
+      imgUrl = null;
+    }
+
     var opt = {
-      url: url
+      url: url,
+      imgUrl: imgUrl
     };
+
     send('captureUrl', opt, cb);
   };
 

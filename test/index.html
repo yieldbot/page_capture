@@ -27,6 +27,7 @@
       </div>
       <div style="margin: 4px;">
         <input id="url" placeholder="http://" style="width: 285px;"><br>
+        <input id="overlay_image" placeholder="http://optional.image.url" style="width: 285px;"><br>
         <button id="pc_url">capture url</button>
       </div>
       <div style="margin: 4px;">
@@ -79,7 +80,8 @@
 
         document.getElementById('pc_url').onclick = function() {
           var url = document.getElementById('url').value;
-          PageCapture.captureUrl(url, function(img) {
+          var overlay = document.getElementById('overlay_image').value;
+          PageCapture.captureUrl(url, overlay, function(img) {
             result.innerHTML = '<img src="' + img + '">';
           });
         };

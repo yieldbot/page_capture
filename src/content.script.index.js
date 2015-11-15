@@ -3,7 +3,7 @@
  * Copyright (c) 2015 Yieldbot, Inc. - All rights reserved.
  */
 
-/* globals chrome */
+/* globals chrome, draggable */
 
 'use strict';
 
@@ -66,10 +66,10 @@
   };
 
   var createControlPanel = function(){
-    var frame = document.getElementById('yb-ad-builder');
+    var frame = document.getElementById('pc-control-panel');
     if(!frame) {
       frame = document.createElement('iframe');
-      frame.setAttribute('id', 'yb-ad-builder');
+      frame.setAttribute('id', 'pc-control-panel');
       document.body.appendChild(frame);
     }
     frame.setAttribute('width', '100%');
@@ -84,6 +84,35 @@
     ].join('');
 
     return frame.contentDocument;
+  };
+
+  var addImageToPage = function(img){
+    var size = img.width + 'x' + img.height;
+    var pos = localStorage.getItem('pc_' + size);
+    var top = '10px';
+    var left = '10px';
+    if(pos){
+      pos = pos.split('|');
+      top = pos[0];
+      left = pos[1];
+    }
+
+    var w = parseInt(left) + parseInt(img.width);
+    var h = parseInt(top) + parseInt(img.height);
+    if (w > window.screen.width){
+      left = '10px';
+    }
+    if (h > window.screen.height){
+      top = '10px';
+    }
+
+    img.style.position = 'absolute';
+    img.style.top = top;
+    img.style.left = left;
+    img.style.zIndex = '99999';
+
+    document.body.appendChild(img);
+    draggable(img);
   };
 
   // listen to messages from clients using the the public api's
@@ -142,17 +171,25 @@
     if (message.option === 'addControls') {
       var frameDoc = createControlPanel();
 
-      setTimeout(function(){
-        frameDoc.body.onclick = function(e) {
-          document.getElementById('yb-ad-builder').style.display = 'none';
-          if(e.target.id === 'capture_btn') {
-            chrome.runtime.sendMessage({api: 'screenCapture'}, function (dataUrl) {
+      if(message.imgUrl){
+        var img = new Image();
+        img.onload = function(){
+          addImageToPage(img);
+        };
+        img.src = message.imgUrl;
+      }
+
+      frameDoc.body.onclick = function(e) {
+        document.getElementById('pc-control-panel').style.display = 'none';
+        if (e.target.id === 'capture_btn') {
+          setTimeout(function() {
+            chrome.runtime.sendMessage({api: 'screenCapture'}, function(dataUrl) {
               sendResponse(dataUrl);
               return true;
             });
-          }
-        };
-      }, 500);
+          }, 500);
+        }
+      };
     }
     // all for asynchronously response
     return true;

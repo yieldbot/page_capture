@@ -14,6 +14,7 @@ body{
 }
 
 #options {
+    background: #fff;
     position: fixed;
     right: 10px;
     top: 10px;

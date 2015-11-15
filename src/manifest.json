@@ -26,14 +26,13 @@
         "file://*/*"
       ],
       "js": [
-        "content.script.index.js"
+        "content.script.index.js",
+        "draggable.js"
       ],
       "css": []
     }
   ],
   "web_accessible_resources": [
-    "public.api.js",
-    "logo.png",
-    "control_panel.html"
+    "public.api.js"
   ]
 }

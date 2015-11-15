@@ -7,12 +7,12 @@ A [Chrome Extension](https://chrome.google.com/webstore/detail/page-capture-by-y
 
 ### API (TODO - hook up jsdoc)
 
-- `getVersion()`: get the version number
-- `capturePage([url])`: capture the entire page of a given url
-- `captureElement(elementId, [url])`: capture an element on a given url
-- `captureSection(x, y, width, height, [url])`: capture a section a given url
+- `getVersion(cb)`: get the version number
+- `capturePage(cb)`: capture the entire page of a given url
+- `captureElement(elementId, cb)`: capture an element on a given url
+- `captureSection(x, y, width, height, cb)`: capture a section a given url
 - `captureImage(imgUrl, width, height, cb)`: capture an external image
-- `captureUrl(url, cb)`: capture an external page
+- `captureUrl(url, [imgUrl], cb)`: capture an external page
 
 ### Deploy Process
 
