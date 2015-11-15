@@ -66,24 +66,28 @@
   };
 
   var createControlPanel = function(){
-    var frame = document.getElementById('pc-control-panel');
-    if(!frame) {
-      frame = document.createElement('iframe');
-      frame.setAttribute('id', 'pc-control-panel');
-      document.body.appendChild(frame);
+    var panel = document.getElementById('pc-control-panel');
+    if(!panel) {
+      panel = document.createElement('div');
+      panel.setAttribute('id', 'pc-control-panel');
+      document.body.appendChild(panel);
     }
-    frame.setAttribute('width', '100%');
-    frame.setAttribute('height', '50px');
-    frame.setAttribute('frameborder', '0');
-    frame.setAttribute('style', 'position:fixed;left:0;bottom:0;border-top:2px solid #bbb;z-index:99999;min-height:50px;background:#fff;');
-    //frame.setAttribute('src', chrome.extension.getURL('control_panel.html'));
-    frame.contentDocument.body.innerHTML = [
-      '<div style="background:#fff;">',
-      '<button id="capture_btn">capture page</button>',
-      '</div>'
-    ].join('');
-
-    return frame.contentDocument;
+    panel.style.position = 'fixed';
+    panel.style.top = '100px';
+    panel.style.right = '10px';
+    panel.style.width = '100px';
+    panel.style.height = '100px';
+    panel.style.background = '#fff';
+    panel.style.border = '2px solid #02aeef';
+    panel.style.zIndex = '99999';
+    panel.style.borderRadius = '50%';
+    panel.style.boxShadow = '0 0 30px 0 #02aeef';
+    panel.style.lineHeight = '100px';
+    panel.style.textAlign = 'center';
+    panel.style.cursor = 'pointer';
+    panel.style.fontWeight = 'bold';
+    panel.innerHTML = 'capture page';
+    return panel;
   };
 
   var addImageToPage = function(img){
@@ -169,7 +173,7 @@
   // listens for messages from the background script
   chrome.extension.onMessage.addListener(function (message, sender, sendResponse) {
     if (message.option === 'addControls') {
-      var frameDoc = createControlPanel();
+      var panel = createControlPanel();
 
       if(message.imgUrl){
         var img = new Image();
@@ -179,16 +183,14 @@
         img.src = message.imgUrl;
       }
 
-      frameDoc.body.onclick = function(e) {
+      panel.onclick = function() {
         document.getElementById('pc-control-panel').style.display = 'none';
-        if (e.target.id === 'capture_btn') {
-          setTimeout(function() {
-            chrome.runtime.sendMessage({api: 'screenCapture'}, function(dataUrl) {
-              sendResponse(dataUrl);
-              return true;
-            });
-          }, 500);
-        }
+        setTimeout(function() {
+          chrome.runtime.sendMessage({api: 'screenCapture'}, function(dataUrl) {
+            sendResponse(dataUrl);
+            return true;
+          });
+        }, 500);
       };
     }
     // all for asynchronously response
