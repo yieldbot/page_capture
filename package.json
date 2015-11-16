@@ -5,7 +5,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "start": "'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' --user-data-dir=./tmp --load-extension=./src --no-default-browser-check --no-first-run --remote-debugging-port=9007 ./test/index.html http://localhost:9007",
+    "dev": "'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' --user-data-dir=./tmp --load-extension=./src --no-default-browser-check --no-first-run --remote-debugging-port=9007 ./test/index.html http://localhost:9007",
     "lint": "eslint ./src",
     "test": "echo write some test",
     "precut_release": "node update_manifest_version.js && git commit . -m 'cut new release'",

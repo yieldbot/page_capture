@@ -14,6 +14,13 @@ A [Chrome Extension](https://chrome.google.com/webstore/detail/page-capture-by-y
 - `captureImage(imgUrl, width, height, cb)`: capture an external image
 - `captureUrl(url, [imgUrl], cb)`: capture an external page
 
+### Want to contribute?
+
+- [fork the repo](https://help.github.com/articles/fork-a-repo/)
+- `npm run dev`: this will start a new chrome profile with the unpacked version on this extension
+- commit your changes
+- [submit a pull request](https://help.github.com/articles/using-pull-requests/)
+
 ### Deploy Process
 
 - npm run cut_release
