@@ -30,7 +30,11 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
         //quality: 100
         format: 'png'
       };
-      chrome.tabs.captureVisibleTab(options, sendResponse);
+      chrome.tabs.captureVisibleTab(options, function(res){
+        chrome.tabs.getZoom(function(zoomFactor){
+          sendResponse({img: res, zoomFactor: zoomFactor});
+        });
+      });
     }
 
     else if (request.api === 'captureUrl') {

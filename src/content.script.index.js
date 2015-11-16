@@ -17,20 +17,30 @@
    * @param {number} y
    * @param {number} width
    * @param {number} height
+   * @param {number} zoomFactor
    * @param {function} cb
    * @return {undefined}
    */
-  var crop = function(imageBase64, x, y, width, height, cb) {
+  var crop = function(imageBase64, x, y, width, height, zoomFactor, cb) {
     var img = new Image();
     img.onload = function() {
       var canvas = document.createElement('canvas');
       var canvasContext = canvas.getContext('2d');
+
       canvas.width = width;
       canvas.height = height;
 
-      canvasContext.drawImage(img, x, y, width, height, 0, 0, width, height);
+      // update the properties if the zoom level is not 100%
+      if (zoomFactor !== 1) {
+        x = x * zoomFactor;
+        y = y * zoomFactor;
+        width = width * zoomFactor;
+        height = height * zoomFactor;
+      }
 
-      cb(canvas.toDataURL());
+      canvasContext.drawImage(img, x, y, width, height, 0, 0, canvas.width, canvas.height);
+
+      cb(canvas.toDataURL('image/jpeg', 1));
     };
     img.src = imageBase64;
   };
@@ -58,8 +68,8 @@
 
       setTimeout(function() {
         offset = target.getBoundingClientRect();
-        chrome.runtime.sendMessage({api: 'screenCapture'}, function(dataUrl) {
-          crop(dataUrl, offset.left, offset.top, offset.width, offset.height, callback);
+        chrome.runtime.sendMessage({api: 'screenCapture'}, function(data) {
+          crop(data.img, offset.left, offset.top, offset.width, offset.height, data.zoomFactor, callback);
         });
       }, waitFor);
     }
@@ -77,7 +87,7 @@
     panel.style.right = '10px';
     panel.style.width = '100px';
     panel.style.height = '100px';
-    panel.style.background = '#fff';
+    panel.style.background = 'linear-gradient(#ccc, #aaf)';
     panel.style.border = '2px solid #02aeef';
     panel.style.zIndex = '99999';
     panel.style.borderRadius = '50%';
@@ -149,15 +159,15 @@
     }
 
     else if (data.api === 'capturePage') {
-      chrome.runtime.sendMessage({api: 'screenCapture'}, function(dataUrl) {
-        send(dataUrl);
+      chrome.runtime.sendMessage({api: 'screenCapture'}, function(data) {
+        send(data.img);
         return true;
       });
     }
 
     else if (data.api === 'captureSection') {
-      chrome.runtime.sendMessage({api: 'screenCapture'}, function(dataUrl) {
-        crop(dataUrl, data.x, data.y, data.width, data.height, send);
+      chrome.runtime.sendMessage({api: 'screenCapture'}, function(responseData) {
+        crop(responseData.img, data.x, data.y, data.width, data.height, responseData.zoomFactor, send);
         return true;
       });
     }
@@ -186,8 +196,8 @@
       panel.onclick = function() {
         document.getElementById('pc-control-panel').style.display = 'none';
         setTimeout(function() {
-          chrome.runtime.sendMessage({api: 'screenCapture'}, function(dataUrl) {
-            sendResponse(dataUrl);
+          chrome.runtime.sendMessage({api: 'screenCapture'}, function(responseData) {
+            sendResponse(responseData.img);
             return true;
           });
         }, 500);
