@@ -19,27 +19,50 @@
     </div>
 
     <div id="options">
-      <div style="margin: 4px;">
-        <button id="pc_box1">capture box 1</button>
-      </div>
-      <div style="margin: 4px;">
-        <button id="pc_page">capture current page</button>
-      </div>
-      <div style="margin: 4px;">
-        <input id="url" placeholder="http://" style="width: 285px;"><br>
-        <input id="overlay_image" placeholder="http://optional.image.url" style="width: 285px;"><br>
-        <button id="pc_url">capture url</button>
-      </div>
-      <div style="margin: 4px;">
-        <input id="section" placeholder="x,y" style="width: 285px;"><br>
-        <button id="pc_section">capture section</button>
-      </div>
-      <div style="margin: 4px;">
-        <input id="image_url" placeholder="http://"  style="width: 285px;"><br>
-        <button id="pc_image">capture image</button>
-      </div>
+      <table>
+        <tr>
+          <th colspan="2">Api Example</th>
+        </tr>
+        <tr>
+          <td>getVersion</td>
+          <td><button id="get_version">get version</button></td>
+        </tr>
+        <tr>
+          <td>captureElement</td>
+          <td><button id="pc_box1">capture box 1</button></td>
+        </tr>
+        <tr>
+          <td>capturePage</td>
+          <td><button id="pc_page">capture current page</button></td>
+        </tr>
+        <tr>
+          <td>captureUrl</td>
+          <td>
+            <input type="text" id="url" placeholder="http://"><br>
+            <input type="text" id="overlay_image" placeholder="http://optional.image.url"><br>
+            <button id="pc_url">capture url</button>
+          </td>
+        </tr>
+        <tr>
+          <td>captureSection</td>
+          <td>
+            <input type="text" id="section" placeholder="x,y"><br>
+            <button id="pc_section">capture section</button>
+          </td>
+        </tr>
+        <tr>
+          <td>captureImage</td>
+          <td>
+            <input type="text" id="image_url" placeholder="http://"><br>
+            <button id="pc_image">capture image</button>
+          </td>
+        </tr>
+      </table>
+
     </div>
 
+    <hr>
+    <h4 style="text-align: center">&#8650; RESULT &#8650;</h4>
     <div id="result"></div>
 
     <script type="text/javascript">
@@ -48,9 +71,11 @@
 
       pcQueue.push(function() {
 
-        PageCapture.getVersion(function(v) {
-          result.innerHTML = 'version = ' + v;
-        });
+        document.getElementById('get_version').onclick = function() {
+          PageCapture.getVersion(function(v) {
+            result.innerHTML = 'version = ' + v;
+          });
+        };
 
         document.getElementById('pc_box1').onclick = function() {
           PageCapture.captureElement('#box1', function(img) {

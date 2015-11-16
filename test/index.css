@@ -18,15 +18,53 @@ body{
     position: fixed;
     right: 10px;
     top: 10px;
-    width: 300px;
+    width: 400px;
     border: 1px solid #a0a0a0;
     border-radius: 3px;
     padding: 3px;
 }
 
+#options table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#options table tr td:first-child {
+    font-weight: bold;
+    padding-right: 10px;
+    width: 100px;
+}
+
+#options table th {
+    padding: 3px;
+    background: #dfdfdf;
+    border-bottom: 1px solid #bbb;
+}
+
+#options table td {
+    vertical-align: top;
+    padding-bottom: 5px;
+    border-bottom: 2px solid #ccc;
+    padding-top: 5px;
+}
+
+#options table td input[type="text"] {
+    width: 98%;
+    height: 20px;
+    margin-bottom: 3px;
+}
+
+#options table tr:last-child td {
+    border-bottom: none;
+}
+
+#options table tr:nth-child(odd) td {
+    background: #efefef;
+}
+
 button {
-    background: linear-gradient(#f7f7f7, #cfcfcf);
-    border-radius: 2px;
+    background: linear-gradient(#efefef, #bbb);
+    border-radius: 4px;
     border:1px solid #ccc;
 }
 
