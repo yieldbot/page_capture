@@ -2,6 +2,17 @@ body{
     padding:0 10px;
 }
 
+#install-btn {
+    display: none;
+    margin-bottom: 10px;
+    border-radius: 0;
+    padding: 10px;
+    background: linear-gradient(#f7f7f7, #dfdfdf);
+}
+#install-btn:hover {
+    background: linear-gradient(#dfdfdf, #f7f7f7);
+}
+
 #box1 {
     top: 50px;
     left: 60px;

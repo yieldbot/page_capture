@@ -2,13 +2,28 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8">
-    <title></title>
+    <meta name="google-site-verification" content="XE1rBgVqJKs_EahhfFTYUKM46BTvlSzc8qrzxvpIbWo" />
+    <link rel="chrome-webstore-item" href="https://chrome.google.com/webstore/detail/jalljeamdfcpcigocpbgfbebdjfmpdof">
+    <title>Page Capture (by Yieldbot)</title>
     <link rel="stylesheet" href="index.css">
   </head>
   <body>
 
+    <script>
+      function install() {
+        chrome.webstore.install('https://chrome.google.com/webstore/detail/jalljeamdfcpcigocpbgfbebdjfmpdof',
+          function() {
+            console.log("Sucess", arguments);
+          },
+          function() {
+            console.log("Failure:", arguments);
+          });
+      }
+    </script>
+
     <h1>Page Capture Chrome Extension</h1>
     <h4>Allows page capturing from within your Web Application</h4>
+    <button onclick="install()" id="install-btn">Add to "Page Capture" Extension Chrome</button>
 
     <div id="box1">
       <h1>Title Box 1</h1>
@@ -135,6 +150,10 @@
         };
 
       });
+
+      if (chrome && chrome.app && !chrome.app.isInstalled) {
+        document.getElementById('install-btn').style.display = 'block';
+      }
 
     </script>
 
