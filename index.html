@@ -1,8 +1,21 @@
 <html>
   <head>
     <meta name="google-site-verification" content="XE1rBgVqJKs_EahhfFTYUKM46BTvlSzc8qrzxvpIbWo" />
+    <link rel="chrome-webstore-item" href="https://chrome.google.com/webstore/detail/jalljeamdfcpcigocpbgfbebdjfmpdof">
   </head>
   <body>
     page_capture
+    
+    <button onclick="chrome.webstore.install()" id="install-button">Add to Chrome</button>
+<script>
+if (chrome && chrome.app){
+  if(chrome.app.isInstalled) {
+    document.getElementById('install-button').style.display = 'none';
+  }
+} else {
+  document.getElementById('install-button').style.display = 'none';
+}
+</script>
+    
   </body>
 </html>
