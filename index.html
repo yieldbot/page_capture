@@ -6,7 +6,15 @@
   <body>
     page_capture
     
-    <button onclick="chrome.webstore.install()" id="install-button">Add to Chrome</button>
+    <script>
+      function install(){
+        chrome.webstore.install('https://chrome.google.com/webstore/detail/jalljeamdfcpcigocpbgfbebdjfmpdof', 
+                      function(){ console.log("Sucess", arguments);},
+                      function(detail){ console.log("Failure:",, arguments);});
+      }
+    </script>
+    
+    <button onclick="install()" id="install-button">Add to Chrome</button>
 <script>
 if (chrome && chrome.app){
   if(chrome.app.isInstalled) {
