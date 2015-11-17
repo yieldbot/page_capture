@@ -10,10 +10,12 @@
   <body>
 
     <script>
+      var isLocal = /file/.test(location.protocol);
       function install() {
         chrome.webstore.install('https://chrome.google.com/webstore/detail/jalljeamdfcpcigocpbgfbebdjfmpdof',
           function() {
             console.log("Sucess", arguments);
+            location.reload();
           },
           function() {
             console.log("Failure:", arguments);
@@ -40,30 +42,30 @@
         </tr>
         <tr>
           <td>getVersion</td>
-          <td><button id="get_version">run</button></td>
+          <td><button disabled id="get_version">run</button></td>
         </tr>
         <tr>
           <td>captureElement</td>
-          <td><button id="pc_box1">run</button></td>
+          <td><button disabled id="pc_box1">run</button></td>
         </tr>
         <tr>
           <td>capturePage</td>
-          <td><button id="pc_page">run</button></td>
+          <td><button disabled id="pc_page">run</button></td>
         </tr>
         <tr>
           <td>captureUrl</td>
           <td>
             url: <input type="text" id="url" placeholder="http://"><br>
-            <button id="pc_url">run</button>
+            <button disabled id="pc_url">run</button>
           </td>
         </tr>
         <tr>
           <td>captureUrlWithOverlay</td>
           <td>
-            url: <input type="text" id="url2" placeholder="http://" value="www.bhg.com"><br>
-            imgUrl: <input type="text" id="overlay_image" placeholder="http://optional.image.url" value="http://www.bannerinspiration.com/assets/uploads/r_27_f.jpg"><br>
+            url: <input type="text" id="url2" placeholder="http://" value=""><br>
+            imgUrl: <input type="text" id="overlay_image" placeholder="http://optional.image.url" value=""><br>
             includeOverlay: <input type="checkbox" checked id="include_overlay"><br>
-            <button id="pc_url2">run</button>
+            <button disabled id="pc_url2">run</button>
           </td>
         </tr>
         <tr>
@@ -73,14 +75,14 @@
             y: <input type="number" id="section_y" value="10"><br>
             width: <input type="number" id="section_w" value="300"><br>
             height: <input type="number" id="section_h" value="250"><br>
-            <button id="pc_section">run</button>
+            <button disabled id="pc_section">run</button>
           </td>
         </tr>
         <tr>
           <td>captureImage</td>
           <td>
             url: <input type="text" id="image_url" placeholder="http://"><br>
-            <button id="pc_image">capture image</button>
+            <button disabled id="pc_image">capture image</button>
           </td>
         </tr>
       </table>
@@ -97,24 +99,28 @@
 
       pcQueue.push(function() {
 
+        document.getElementById('get_version').disabled = false;
         document.getElementById('get_version').onclick = function() {
           PageCapture.getVersion(function(v) {
             result.innerHTML = 'version = ' + v;
           });
         };
 
+        document.getElementById('pc_box1').disabled = false;
         document.getElementById('pc_box1').onclick = function() {
           PageCapture.captureElement('#box1', function(img) {
             result.innerHTML = '<img src="' + img + '">';
           });
         };
 
+        document.getElementById('pc_page').disabled = false;
         document.getElementById('pc_page').onclick = function() {
           PageCapture.capturePage(function(img) {
             result.innerHTML = '<img src="' + img + '">';
           });
         };
 
+        document.getElementById('pc_section').disabled = false;
         document.getElementById('pc_section').onclick = function() {
           var x = document.getElementById('section_x').value.trim();
           var y = document.getElementById('section_y').value.trim();
@@ -125,6 +131,7 @@
           });
         };
 
+        document.getElementById('pc_image').disabled = false;
         document.getElementById('pc_image').onclick = function() {
           var url = document.getElementById('image_url').value;
           PageCapture.captureImage(url, 300, 250, function(img) {
@@ -132,6 +139,7 @@
           });
         };
 
+        document.getElementById('pc_url').disabled = false;
         document.getElementById('pc_url').onclick = function() {
           var url = document.getElementById('url').value;
           PageCapture.captureUrl(url, function(img) {
@@ -139,6 +147,7 @@
           });
         };
 
+        document.getElementById('pc_url2').disabled = false;
         document.getElementById('pc_url2').onclick = function() {
           var url = document.getElementById('url2').value;
           var overlay = document.getElementById('overlay_image').value;
@@ -151,8 +160,12 @@
 
       });
 
-      if (chrome && chrome.app && !chrome.app.isInstalled) {
-        document.getElementById('install-btn').style.display = 'block';
+      if (chrome && chrome.app) {
+        if(!chrome.app.isInstalled) {
+          document.getElementById('install-btn').style.display = 'block';
+        }
+      } else {
+
       }
 
     </script>
