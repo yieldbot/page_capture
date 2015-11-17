@@ -82,7 +82,7 @@
           <td>captureImage</td>
           <td>
             url: <input type="text" id="image_url" placeholder="http://"><br>
-            <button disabled id="pc_image">capture image</button>
+            <button disabled id="pc_image">run</button>
           </td>
         </tr>
       </table>
@@ -160,7 +160,7 @@
 
       });
 
-      if (chrome && chrome.app && !chrome.app.isInstalled) {
+      if (chrome && chrome.app && typeof PageCapture === 'undefined') {
         document.getElementById('install-btn').style.display = 'block';
       }
 
