@@ -160,9 +160,11 @@
 
       });
 
-      if (chrome && chrome.app && typeof PageCapture === 'undefined') {
-        document.getElementById('install-btn').style.display = 'block';
-      }
+      setTimeout(function(){
+        if (chrome && chrome.app && typeof PageCapture === 'undefined') {
+          document.getElementById('install-btn').style.display = 'block';
+        }
+      }, 2000);
 
       if (!chrome){
         document.getElementById('options').innerHTML = '<h1>This page will only work in chrome.</h1>';
