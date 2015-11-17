@@ -160,7 +160,7 @@
 
       });
 
-      if (chrome && chrome.app && !PageCapture) {
+      if (chrome && chrome.app && typeof PageCapture === 'undefined') {
         document.getElementById('install-btn').style.display = 'block';
       }
 
