@@ -89,7 +89,7 @@
     panel.style.height = '100px';
     panel.style.background = 'linear-gradient(#ccc, #aaf)';
     panel.style.border = '2px solid #02aeef';
-    panel.style.zIndex = '99999';
+    panel.style.zIndex = '99999999';
     panel.style.borderRadius = '50%';
     panel.style.boxShadow = '0 0 30px 0 #02aeef';
     panel.style.lineHeight = '100px';
@@ -98,35 +98,6 @@
     panel.style.fontWeight = 'bold';
     panel.innerHTML = 'capture page';
     return panel;
-  };
-
-  var addImageToPage = function(img){
-    var size = img.width + 'x' + img.height;
-    var pos = localStorage.getItem('pc_' + size);
-    var top = '10px';
-    var left = '10px';
-    if(pos){
-      pos = pos.split('|');
-      top = pos[0];
-      left = pos[1];
-    }
-
-    var w = parseInt(left) + parseInt(img.width);
-    var h = parseInt(top) + parseInt(img.height);
-    if (w > window.screen.width){
-      left = '10px';
-    }
-    if (h > window.screen.height){
-      top = '10px';
-    }
-
-    img.style.position = 'absolute';
-    img.style.top = top;
-    img.style.left = left;
-    img.style.zIndex = '99999';
-
-    document.body.appendChild(img);
-    draggable(img);
   };
 
   // listen to messages from clients using the the public api's
@@ -188,16 +159,32 @@
       if(message.imgUrl){
         var img = new Image();
         img.onload = function(){
-          addImageToPage(img);
+          draggable(img);
         };
         img.src = message.imgUrl;
       }
 
       panel.onclick = function() {
         document.getElementById('pc-control-panel').style.display = 'none';
+        var info = null;
+        if(message.imgUrl) {
+          info = {};
+          if (!message.includeOverlay) {
+            img.style.display = 'none';
+            info.url = location.href;
+            info.overlay = img.dataset;
+            info.overlay.url = message.imgUrl;
+            delete info.overlay.pcType;
+          }
+        }
         setTimeout(function() {
           chrome.runtime.sendMessage({api: 'screenCapture'}, function(responseData) {
-            sendResponse(responseData.img);
+            if(info){
+              responseData.info = info;
+              sendResponse(responseData);
+            } else {
+              sendResponse(responseData.img);
+            }
             return true;
           });
         }, 500);

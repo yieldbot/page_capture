@@ -141,21 +141,28 @@ var PageCapture = {};
   /**
    *
    * @param {string} url
-   * @param {string} [imgUrl]
    * @param {function} cb
    */
-  PageCapture.captureUrl = function(url, imgUrl, cb){
-
-    if(typeof arguments[1] === 'function'){
-      cb = imgUrl;
-      imgUrl = null;
-    }
-
+  PageCapture.captureUrl = function(url, cb){
     var opt = {
       url: url,
-      imgUrl: imgUrl
     };
+    send('captureUrl', opt, cb);
+  };
 
+  /**
+   *
+   * @param {string} url
+   * @param {string} imgUrl
+   * @param {boolean} includeOverlay
+   * @param {function} cb
+   */
+  PageCapture.captureUrlWithOverlay = function(url, imgUrl, includeOverlay, cb){
+    var opt = {
+      url: url,
+      imgUrl: imgUrl,
+      includeOverlay: includeOverlay
+    };
     send('captureUrl', opt, cb);
   };
 

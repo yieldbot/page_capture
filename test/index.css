@@ -30,7 +30,6 @@ body{
 }
 
 #options table tr td:first-child {
-    font-weight: bold;
     padding-right: 10px;
     width: 100px;
 }
@@ -48,10 +47,14 @@ body{
     padding-top: 5px;
 }
 
-#options table td input[type="text"] {
-    width: 98%;
+#options table td input[type="text"], #options table td input[type="number"] {
     height: 20px;
     margin-bottom: 3px;
+    width: 160px;
+}
+
+#options table td input[type="number"] {
+    width: 50px;
 }
 
 #options table tr:last-child td {
@@ -66,6 +69,7 @@ button {
     background: linear-gradient(#efefef, #bbb);
     border-radius: 4px;
     border:1px solid #ccc;
+    font-weight: bold;
 }
 
 button:hover {

@@ -25,35 +25,46 @@
         </tr>
         <tr>
           <td>getVersion</td>
-          <td><button id="get_version">get version</button></td>
+          <td><button id="get_version">run</button></td>
         </tr>
         <tr>
           <td>captureElement</td>
-          <td><button id="pc_box1">capture box 1</button></td>
+          <td><button id="pc_box1">run</button></td>
         </tr>
         <tr>
           <td>capturePage</td>
-          <td><button id="pc_page">capture current page</button></td>
+          <td><button id="pc_page">run</button></td>
         </tr>
         <tr>
           <td>captureUrl</td>
           <td>
-            <input type="text" id="url" placeholder="http://"><br>
-            <input type="text" id="overlay_image" placeholder="http://optional.image.url"><br>
-            <button id="pc_url">capture url</button>
+            url: <input type="text" id="url" placeholder="http://"><br>
+            <button id="pc_url">run</button>
+          </td>
+        </tr>
+        <tr>
+          <td>captureUrlWithOverlay</td>
+          <td>
+            url: <input type="text" id="url2" placeholder="http://" value="www.bhg.com"><br>
+            imgUrl: <input type="text" id="overlay_image" placeholder="http://optional.image.url" value="http://www.bannerinspiration.com/assets/uploads/r_27_f.jpg"><br>
+            includeOverlay: <input type="checkbox" checked id="include_overlay"><br>
+            <button id="pc_url2">run</button>
           </td>
         </tr>
         <tr>
           <td>captureSection</td>
           <td>
-            <input type="text" id="section" placeholder="x,y"><br>
-            <button id="pc_section">capture section</button>
+            x: <input type="number" id="section_x" value="10"><br>
+            y: <input type="number" id="section_y" value="10"><br>
+            width: <input type="number" id="section_w" value="300"><br>
+            height: <input type="number" id="section_h" value="250"><br>
+            <button id="pc_section">run</button>
           </td>
         </tr>
         <tr>
           <td>captureImage</td>
           <td>
-            <input type="text" id="image_url" placeholder="http://"><br>
+            url: <input type="text" id="image_url" placeholder="http://"><br>
             <button id="pc_image">capture image</button>
           </td>
         </tr>
@@ -62,7 +73,7 @@
     </div>
 
     <hr>
-    <h4 style="text-align: center">&#8650; RESULT &#8650;</h4>
+    <h4>&#8650; RESULT &#8650;</h4>
     <div id="result"></div>
 
     <script type="text/javascript">
@@ -90,8 +101,11 @@
         };
 
         document.getElementById('pc_section').onclick = function() {
-          var val = document.getElementById('section').value.trim().split(',');
-          PageCapture.captureSection(val[0], val[1], 300, 250, function(img) {
+          var x = document.getElementById('section_x').value.trim();
+          var y = document.getElementById('section_y').value.trim();
+          var width = document.getElementById('section_w').value.trim();
+          var height = document.getElementById('section_h').value.trim();
+          PageCapture.captureSection(x, y, width, height, function(img) {
             result.innerHTML = '<img src="' + img + '">';
           });
         };
@@ -105,9 +119,18 @@
 
         document.getElementById('pc_url').onclick = function() {
           var url = document.getElementById('url').value;
-          var overlay = document.getElementById('overlay_image').value;
-          PageCapture.captureUrl(url, overlay, function(img) {
+          PageCapture.captureUrl(url, function(img) {
             result.innerHTML = '<img src="' + img + '">';
+          });
+        };
+
+        document.getElementById('pc_url2').onclick = function() {
+          var url = document.getElementById('url2').value;
+          var overlay = document.getElementById('overlay_image').value;
+          var includeOverlay = document.getElementById('include_overlay').checked;
+          PageCapture.captureUrlWithOverlay(url, overlay, includeOverlay, function(data) {
+            var overlayInfo = 'Raw Response <pre>' + JSON.stringify(data, null, 2) + '</pre><br>';
+            result.innerHTML = overlayInfo + '<img src="' + data.img + '">';
           });
         };
 

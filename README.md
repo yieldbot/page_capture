@@ -5,6 +5,8 @@
 
 A [Chrome Extension](https://chrome.google.com/webstore/detail/page-capture-by-yieldbot/jalljeamdfcpcigocpbgfbebdjfmpdof) that allows page capturing from within your Web Application.
 
+http://yieldbot.github.io/page_capture/
+
 ### API (TODO - hook up jsdoc)
 
 - `getVersion(cb)`: get the version number
@@ -12,7 +14,8 @@ A [Chrome Extension](https://chrome.google.com/webstore/detail/page-capture-by-y
 - `captureElement(elementId, cb)`: capture an element on a given url
 - `captureSection(x, y, width, height, cb)`: capture a section a given url
 - `captureImage(imgUrl, width, height, cb)`: capture an external image
-- `captureUrl(url, [imgUrl], cb)`: capture an external page
+- `captureUrl(url, cb)`: capture an external page
+- `captureUrlWithOverlay(url, imgUrl, includeOverlay, cb)`: capture an external page with an overlay
 
 ### Want to contribute?
 
