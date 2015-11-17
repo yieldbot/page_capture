@@ -160,12 +160,12 @@
 
       });
 
-      if (chrome && chrome.app) {
-        if(!chrome.app.isInstalled) {
-          document.getElementById('install-btn').style.display = 'block';
-        }
-      } else {
+      if (chrome && chrome.app && !chrome.app.isInstalled) {
+        document.getElementById('install-btn').style.display = 'block';
+      }
 
+      if (!chrome){
+        document.getElementById('options').innerHTML = '<h1>This page will only work in chrome.</h1>';
       }
 
     </script>
