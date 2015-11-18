@@ -1,0 +1,123 @@
+<ul class="api">
+  <li>
+    <span class="bold">getVersion(cb)</span>: get the version number
+    <ul>
+      <li>
+        cb: callback function
+        <ul>
+          <li>version: the version number</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <span class="bold">capturePage(cb)</span>: capture the entire page of a given url
+    <ul>
+      <li>
+        cb: callback function
+        <ul>
+          <li>img: the base64 image</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <span class="bold">captureElement(elementId, cb)</span>: capture an element on a given url
+    <ul>
+      <li>elementId: the element selector</li>
+      <li>
+        cb: callback function
+        <ul>
+          <li>img: the base64 image</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <span class="bold">captureSection(x, y, width, height, cb)</span>: capture a section a given url
+    <ul>
+      <li>x: the starting x position</li>
+      <li>y: the starting y position</li>
+      <li>width: the width of the selection</li>
+      <li>height: the hieight of the selection</li>
+      <li>
+        cb: callback function
+        <ul>
+          <li>img: the base64 image</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <span class="bold">captureImage(imgUrl, width, height, cb)</span>: capture an external image
+    <ul>
+      <li>imgUrl: the image url</li>
+      <li>width: the width of the image (if 0, width will be auto)</li>
+      <li>height: the height of the image (if 0, height will be auto)</li>
+      <li>
+        cb: callback function
+        <ul>
+          <li>img: the base64 image</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <span class="bold">captureUrl(url, cb)</span>: capture an external page
+    <ul>
+      <li>url: the url of the page to capture</li>
+      <li>
+        cb: callback function
+        <ul>
+          <li>img: the base64 image</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <span class="bold">captureUrlWithOverlay(url, imgUrl, includeOverlay, cb)</span>: capture an external page with an overlay
+    <ul>
+      <li>url: the url of the page to capture</li>
+      <li>imgUrl: the image the will be overlayed on "url"</li>
+      <li>
+        includeOverlay: default is true
+        <div style="text-indent:15px;">if true, "imgUrl" will be part of the screenshot</div>
+        <div style="text-indent:15px;">if false, "imgUrl" will NOT be part of the screenshot, the overlay config will be return</div>
+      </li>
+      <li>
+        cb: callback function
+        <ul>
+          <li>
+            data: the result with overlay data
+            <ul>
+              <li>img: the base64 image</li>
+              <li>zoomFactor: the zoom level</li>
+              <li>
+                info: the overlay info
+                <div>
+<pre class="prettyprint linenums">
+{
+  "img": "data:image/png;base64,iVBOR...=",
+  "zoomFactor": 1,
+  "info": {
+    "url": "http://www.bhg.com/",
+    "overlay": {
+      "top": "199",
+      "left": "373",
+      "size": "450x324",
+      "width": "450",
+      "height": "324",
+      "url": "http://some.image.com/page.png"
+    }
+  }
+}
+</pre>
+                </div>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>

@@ -1,34 +1,123 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
+ol, ul {
+    margin-left: 30px;
+}
+
+.bold {
+    font-weight: bold;
+}
+
 body{
-    padding:0 10px;
+    padding: 10px;
+    margin: 0;
+    font-family: helvetica, arial, sans-serif;
+    color: #000b54;
+}
+
+#header {
+    height: 200px;
+    background: linear-gradient(#f7f7f7, #4251c4);
+    border-radius: 10px 10px 0 0;
+    position: relative;
+    margin-bottom: 20px;
+}
+
+#header h1 {
+    padding-top: 50px;
+    /*color: #000b54;*/
+    text-align: center;
+}
+
+#header h4 {
+    /*color: #000b54;*/
+    text-align: center;
+    padding-top: 20px;
+}
+
+#header .nav {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+}
+
+#header .nav a {
+    background: #959edc;
+    padding: 10px 10px 0 10px;
+    margin: 0 10px;
+    border-radius: 5px 5px 0 0;
+    text-decoration: none;
+    font-size: 20px;
+    color: #000b54;
+}
+
+#header .nav a.active {
+    background: #fff;
+    color: #4251c4;
+}
+
+#content {
+    font-size: 20px;
+    line-height: 25px;
+    color: #000;
+}
+
+.api > li, .quick_start > li, .li-spacing> li {
+    margin-bottom: 20px;
+}
+
+pre.prettyprint {
+    font-size: 14px;
+    line-height: 16px;
+    border-radius: 5px;
+    padding: 10px;
+    border:1px solid #ddd;
 }
 
 #install-btn {
-    display: none;
     margin-bottom: 10px;
     border-radius: 0;
     padding: 10px;
-    background: linear-gradient(#f7f7f7, #dfdfdf);
+    background: linear-gradient(#f7f7f7, #cfcfcf);
 }
 #install-btn:hover {
-    background: linear-gradient(#dfdfdf, #f7f7f7);
+    background: linear-gradient(#cfcfcf, #f7f7f7);
 }
 
 #box1 {
-    top: 50px;
-    left: 60px;
     width: 200px;
     height: 300px;
     background: #e0e0e0;
     border: 1px solid #c0c0c0;
     overflow: hidden;
     text-align: center;
+    padding: 5px;
+    float: left;
+}
+
+.demo {
+    overflow: auto;
+}
+
+.demo .api {
+    cursor: pointer;
+}
+
+.demo .api:hover {
+    text-decoration: underline;
+}
+
+.demo .params {
+    display: none;
 }
 
 #options {
     background: #fff;
-    position: fixed;
-    right: 10px;
-    top: 10px;
+    float: right;
     width: 400px;
     border: 1px solid #a0a0a0;
     border-radius: 3px;

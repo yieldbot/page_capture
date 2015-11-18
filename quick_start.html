@@ -1,0 +1,57 @@
+<ol class="quick_start">
+  <li>
+    Install the extension from the Google Webstore:<br>
+    &nbsp;&nbsp;<a href="https://chrome.google.com/webstore/detail/jalljeamdfcpcigocpbgfbebdjfmpdof">https://chrome.google.com/webstore/detail/jalljeamdfcpcigocpbgfbebdjfmpdof</a>
+  </li>
+  <li>
+    Inside your application
+    <ul class="li-spacing">
+      <li>
+        <div>Create a queue to push your api commands to</div>
+        <div>Q: Why do i need to do this?</div>
+        <div>A: This is the queue that the "Page Capture" extension looks for, and it safe guards your application if the extension is not installed</div>
+<pre class="prettyprint linenums">
+  &lt;script&gt;
+    // this MUST be on the top window scope
+    var pcQueue = pcQueue || [];
+  &lt;/script&gt;
+</pre>
+      </li>
+      <li>
+        <div>Now, let's get the version number of the extension</div>
+<pre class="prettyprint linenums">
+  &lt;button id="get_version">run&lt;/button>
+</pre>
+<pre class="prettyprint linenums">
+  &lt;script&gt;
+    pcQueue.push(function() {
+      document.getElementById('get_version').onclick = function() {
+        PageCapture.getVersion(function(v) {
+          console.log('version = ' + v);
+        });
+      };
+    });
+  &lt;/script&gt;
+</pre>
+      </li>
+      <li>
+        <div>Take a screenshot of an element on the page, now we're talking...</div>
+<pre class="prettyprint linenums">
+  &lt;script&gt;
+    pcQueue.push(function() {
+      PageCapture.captureElement('#some_element_id', function(base64Img) {
+        var img = new Image();
+        img.src = base64Img;
+        document.body.appendChild(img);
+      });
+    });
+  &lt;/script&gt;
+</pre>
+      </li>
+      <li>
+        Checkout the <a href="#api" class="section">API Reference</a> for the full api list
+      </li>
+
+    </ul>
+  </li>
+</ol>
