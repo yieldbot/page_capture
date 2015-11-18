@@ -105,14 +105,21 @@ pre.prettyprint {
 
 .demo .api {
     cursor: pointer;
-}
-
-.demo .api:hover {
     text-decoration: underline;
 }
 
 .demo .params {
     display: none;
+}
+
+.demo #result pre {
+    font-size: 12px;
+    line-height: 14px;
+    background: #fff;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    overflow: hidden;
 }
 
 #options {
@@ -122,6 +129,7 @@ pre.prettyprint {
     border: 1px solid #a0a0a0;
     border-radius: 3px;
     padding: 3px;
+    font-size: 14px;
 }
 
 #options table {
@@ -132,6 +140,7 @@ pre.prettyprint {
 #options table tr td:first-child {
     padding-right: 10px;
     width: 100px;
+    font-weight: bold;
 }
 
 #options table th {
@@ -142,9 +151,8 @@ pre.prettyprint {
 
 #options table td {
     vertical-align: top;
-    padding-bottom: 5px;
     border-bottom: 2px solid #ccc;
-    padding-top: 5px;
+    padding:5px;
 }
 
 #options table td input[type="text"], #options table td input[type="number"] {
@@ -163,6 +171,10 @@ pre.prettyprint {
 
 #options table tr:nth-child(odd) td {
     background: #efefef;
+}
+
+#options button {
+    padding: 5px;
 }
 
 button {
