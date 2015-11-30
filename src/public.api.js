@@ -117,6 +117,7 @@ var PageCapture = {};
     }
 
     img.style.display = 'block';
+    img.style.zIndex = '99999999999';
 
     img.onload = function() {
       document.body.appendChild(img);
