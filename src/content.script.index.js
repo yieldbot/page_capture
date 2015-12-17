@@ -96,7 +96,7 @@
     panel.style.textAlign = 'center';
     panel.style.cursor = 'pointer';
     panel.style.fontWeight = 'bold';
-    panel.innerHTML = 'capture page';
+    panel.innerHTML = 'capture';
     return panel;
   };
 
@@ -164,7 +164,8 @@
         img.src = message.imgUrl;
       }
 
-      panel.onclick = function() {
+      var onClick = function(e) {
+        e.preventDefault();
         document.getElementById('pc-control-panel').style.display = 'none';
         var info = null;
         if(message.imgUrl) {
@@ -189,6 +190,13 @@
           });
         }, 500);
       };
+
+      var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+      if (isMobile) {
+        panel.addEventListener('touchend', onClick, false);
+      } else {
+        panel.addEventListener('click', onClick, false);
+      }
     }
     // all for asynchronously response
     return true;

@@ -51,9 +51,6 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
           activeTab = tab;
           stack[tab.id] = function() {
 
-            // only run this once
-            stack[activeTab.id] = null;
-
             var opts = request;
             opts.option = 'addControls';
 

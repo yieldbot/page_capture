@@ -90,6 +90,28 @@
     updatePosition(selected, (y_pos - y_elem), (x_pos - x_elem));
   }
 
+  var onTouchStart = function(e){
+    var el = overlay;
+    el.setAttribute('data-x', e.targetTouches[0].clientX);
+    el.setAttribute('data-y', e.targetTouches[0].clientY);
+    el.setAttribute('data-top', el.offsetTop);
+    el.setAttribute('data-left', el.offsetLeft);
+    e.preventDefault();
+  };
+
+  var onTouchMove = function(e){
+    var el = overlay;
+    var touch = e.targetTouches[0];
+    var top = parseFloat(el.dataset.top);
+    var left = parseFloat(el.dataset.left);
+    var deltaX = touch.clientX - parseInt(el.dataset.x);
+    var deltaY = touch.clientY - parseInt(el.dataset.y);
+
+    el.style.top = (top + deltaY)+ 'px';
+    el.style.left = (left + deltaX)  + 'px';
+    e.preventDefault();
+  };
+
   /**
    * allow for finer positioning via up, down, left & right arrow keys
    *
@@ -155,6 +177,10 @@
       });
 
       document.addEventListener('mousemove', moveElement);
+
+      // mobile handle
+      document.addEventListener('touchstart', onTouchStart, false);
+      document.addEventListener('touchmove', onTouchMove, false);
 
       document.addEventListener('mouseup', function() {
         overlay.style.opacity = 1;
