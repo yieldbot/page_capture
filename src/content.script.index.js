@@ -59,19 +59,19 @@
     } else {
 
       var offset = target.getBoundingClientRect();
-      var waitFor = 0;
+      //var waitFor = 0;
+      //
+      //if (offset.top < 0) {
+      //  target.scrollIntoView();
+      //  waitFor = 200;
+      //}
 
-      if (offset.top < 0) {
-        target.scrollIntoView();
-        waitFor = 200;
-      }
-
-      setTimeout(function() {
-        offset = target.getBoundingClientRect();
-        chrome.runtime.sendMessage({api: 'screenCapture'}, function(data) {
-          crop(data.img, offset.left, offset.top, offset.width, offset.height, data.zoomFactor, callback);
-        });
-      }, waitFor);
+      //setTimeout(function() {
+      //offset = target.getBoundingClientRect();
+      chrome.runtime.sendMessage({api: 'screenCapture'}, function(data) {
+        crop(data.img, offset.left, offset.top, offset.width, offset.height, data.zoomFactor, callback);
+      });
+      //}, waitFor);
     }
   };
 
