@@ -159,6 +159,8 @@
       if(message.imgUrl){
         var img = new Image();
         img.onload = function(){
+          img.style.width = img.naturalWidth + 'px';
+          img.style.height = img.naturalHeight + 'px';
           draggable(img);
         };
         img.src = message.imgUrl;
