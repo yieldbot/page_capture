@@ -165,11 +165,11 @@
           info = {};
           if (!message.includeOverlay) {
             img.style.display = 'none';
-            info.url = location.href;
-            info.overlay = img.dataset;
-            info.overlay.url = message.imgUrl;
-            delete info.overlay.pcType;
           }
+          info.url = location.href;
+          info.overlay = img.dataset;
+          info.overlay.url = message.imgUrl;
+          delete info.overlay.pcType;
         }
         setTimeout(function() {
           chrome.runtime.sendMessage({api: 'screenCapture'}, function(responseData) {

@@ -143,6 +143,7 @@
         document.getElementById('pc_url').onclick = function() {
           var url = document.getElementById('url').value;
           PageCapture.captureUrl(url, function(img) {
+            console.log(arguments);
             result.innerHTML = '<img src="' + img + '">';
           });
         };
