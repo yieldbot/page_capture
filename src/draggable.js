@@ -150,9 +150,9 @@
   /**
    *
    * @param {HTMLImageElement} img
-   * #return {undefined}
+   * @return {undefined}
    */
-  window.draggable = function(img) {
+  window.__pc_draggable = function(img) {
     if (img && img.tagName === 'IMG') {
       addImageToPage(img);
       overlay = img;

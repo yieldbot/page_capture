@@ -3,7 +3,7 @@
  * Copyright (c) 2015 Yieldbot, Inc. - All rights reserved.
  */
 
-/* globals chrome, draggable */
+/* globals chrome */
 
 'use strict';
 
@@ -107,7 +107,7 @@
       window.postMessage(opt, '*');
     };
 
-    console.log('page_capture api', data.api);
+    //console.log('page_capture api', data.api);
 
     if (data.api === 'getVersion') {
       send(manifest.version);
@@ -152,7 +152,7 @@
         img.onload = function(){
           img.style.width = img.naturalWidth + 'px';
           img.style.height = img.naturalHeight + 'px';
-          draggable(img);
+          window.__pc_draggable(img);
         };
         img.src = message.imgUrl;
       }
@@ -200,7 +200,5 @@
   apiScript.src = chrome.extension.getURL('public.api.js');
   apiScript.type = 'text/javascript';
   document.body.appendChild(apiScript);
-
-  console.log();
 
 })();
