@@ -91,25 +91,31 @@
   }
 
   var onTouchStart = function(e){
+    e.preventDefault();
     var el = overlay;
     el.setAttribute('data-x', e.targetTouches[0].clientX);
     el.setAttribute('data-y', e.targetTouches[0].clientY);
     el.setAttribute('data-top', el.offsetTop);
     el.setAttribute('data-left', el.offsetLeft);
+  };
+
+  var onTouchEnd = function(e){
     e.preventDefault();
+    overlay.setAttribute('data-top', overlay.offsetTop);
+    overlay.setAttribute('data-left', overlay.offsetLeft);
   };
 
   var onTouchMove = function(e){
+    e.preventDefault();
     var el = overlay;
     var touch = e.targetTouches[0];
-    var top = parseFloat(el.dataset.top);
-    var left = parseFloat(el.dataset.left);
-    var deltaX = touch.clientX - parseInt(el.dataset.x);
     var deltaY = touch.clientY - parseInt(el.dataset.y);
+    var deltaX = touch.clientX - parseInt(el.dataset.x);
+    var top = parseFloat(el.dataset.top) + deltaY;
+    var left = parseFloat(el.dataset.left) + deltaX;
 
-    el.style.top = (top + deltaY)+ 'px';
-    el.style.left = (left + deltaX)  + 'px';
-    e.preventDefault();
+    el.style.top = top + 'px';
+    el.style.left = left + 'px';
   };
 
   /**
@@ -178,9 +184,10 @@
 
       document.addEventListener('mousemove', moveElement);
 
-      // mobile handle
+      // mobile handlers
       document.addEventListener('touchstart', onTouchStart, false);
       document.addEventListener('touchmove', onTouchMove, false);
+      document.addEventListener('touchend', onTouchEnd, false);
 
       document.addEventListener('mouseup', function() {
         overlay.style.opacity = 1;
