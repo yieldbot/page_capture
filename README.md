@@ -24,15 +24,15 @@ http://yieldbot.github.io/page_capture/
 - commit your changes
 - [submit a pull request](https://help.github.com/articles/using-pull-requests/)
 
-### Deploy Process
+### Releasing A New Version
 
+- make code changes + git commit (don't bump package.json version, this is done as part of `cut_release`)
 - npm run cut_release
 - git fetch
 - git rebase
 - git push
 - git push origin --tags
 - check the [travis build](https://travis-ci.org/yieldbot/page_capture)
-
 
 ### Example
 
