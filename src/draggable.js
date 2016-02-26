@@ -10,7 +10,6 @@
   // Object of the element to be moved
   var selected = null;
   var overlay = null;
-  var overlayImg = null;
   // Stores x & y coordinates of the mouse pointer
   var x_pos = 0;
   var y_pos = 0;
@@ -18,8 +17,15 @@
   var x_elem = 0;
   var y_elem = 0;
 
-  var addImageToPage = function(img){
-    var size = img.width + 'x' + img.height;
+  /**
+   *
+   * @param {HTMLDivElement} divElement
+   * @param {string} w
+   * @param {string} h
+   * @return {HTMLDivElement}
+   */
+  var addDivToPage = function(divElement, w, h){
+    var size = w + 'x' + h;
     var pos = localStorage.getItem('pc_' + size);
     var top = '10px';
     var left = '10px';
@@ -29,23 +35,28 @@
       left = pos[1];
     }
 
-    var w = parseInt(left) + parseInt(img.width);
-    var h = parseInt(top) + parseInt(img.height);
-    if (w > window.screen.width){
+    var width = parseInt(left) + parseInt(w);
+    var height = parseInt(top) + parseInt(h);
+    if (width > window.screen.width){
       left = '10px';
     }
-    if (h > window.screen.height){
+    if (height > window.screen.height){
       top = '10px';
     }
 
-    img.style.position = 'absolute';
-    img.style.top = top;
-    img.style.left = left;
-    img.style.zIndex = '99999';
-    img.setAttribute('data-top', parseInt(top));
-    img.setAttribute('data-left', parseInt(left));
+    divElement.style.position = 'absolute';
+    divElement.style.top = top;
+    divElement.style.left = left;
+    divElement.style.cursor = 'move';
+    divElement.style.zIndex = '999999999';
+    divElement.setAttribute('data-pc-type', 'overlay');
+    divElement.setAttribute('data-top', parseInt(top));
+    divElement.setAttribute('data-left', parseInt(left));
+    divElement.setAttribute('data-size', size);
+    //divElement.setAttribute('data-width', width);
+    //divElement.setAttribute('data-height', height);
 
-    document.body.appendChild(img);
+    return document.body.appendChild(divElement);
   };
 
   /**
@@ -83,10 +94,6 @@
   function moveElement(e) {
     x_pos = document.all ? window.event.clientX : e.pageX;
     y_pos = document.all ? window.event.clientY : e.pageY;
-    overlayImg = null;
-    if (e.target.dataset.pcType) {
-      overlayImg = e.target;
-    }
     updatePosition(selected, (y_pos - y_elem), (x_pos - x_elem));
   }
 
@@ -124,11 +131,11 @@
    * @return {undefined}
    */
   var positionAlignment = function (e) {
-    if (overlayImg && (e.keyCode >= 37 && e.keyCode <= 40)) {
+    if (overlay && (e.keyCode >= 37 && e.keyCode <= 40)) {
       e.preventDefault();
 
-      var top = overlayImg.offsetTop;
-      var left = overlayImg.offsetLeft;
+      var top = overlay.offsetTop;
+      var left = overlay.offsetLeft;
 
       // up
       if (e.keyCode === 38) {
@@ -149,29 +156,22 @@
 
       top = (top < 0 ? 0 : top) + 'px';
       left = (left < 0 ? 0 : left) + 'px';
-      updatePosition(overlayImg, top, left);
+      updatePosition(overlay, top, left);
     }
   };
 
   /**
    *
-   * @param {HTMLImageElement} img
+   * @param {HTMLDivElement} divElement
+   * @param {string} w
+   * @param {string} h
    * @return {undefined}
    */
-  window.__pc_draggable = function(img) {
-    if (img && img.tagName === 'IMG') {
-      addImageToPage(img);
-      overlay = img;
+  window.__pc_draggable = function(divElement, w, h) {
+    if (divElement && divElement.tagName === 'DIV') {
+      overlay = addDivToPage(divElement, w, h);
 
-      var size = img.width + 'x' + img.height;
-
-      img.style.cursor = 'move';
-      img.setAttribute('data-pc-type', 'overlay');
-      img.setAttribute('data-size', size);
-      img.setAttribute('data-width', img.width);
-      img.setAttribute('data-height', img.height);
-
-      img.onmousedown = function() {
+      divElement.onmousedown = function() {
         _drag_init(this);
         return false;
       };
@@ -179,7 +179,7 @@
       document.addEventListener('keydown', positionAlignment);
 
       document.addEventListener('keyup', function(){
-        img.style.opacity = 1;
+        divElement.style.opacity = 1;
       });
 
       document.addEventListener('mousemove', moveElement);

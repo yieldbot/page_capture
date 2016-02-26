@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <style>
+      * {
+        padding: 0;
+        margin: 0;
+        font-family: sans-serif;
+      }
+      body {
+        background: #fff;
+      }
+      div {
+        margin: 2px;
+      }
+      span {
+        display: inline-block;
+      }
+      input[type="number"] {
+        font-size: 15px;
+        width: 30px;
+        border-radius: 5px;
+        border: 1px solid #aaa;
+        outline: none;
+        padding: 2px 2px 2px 6px;
+      }
+      input[type="color"] {
+        background: #fff;
+        height: 21px;
+        border-radius: 5px;
+        width: 35px;
+      }
+      .l {
+        width: 95px;
+      }
+      .right {
+        float: right;
+      }
+      #captureButton{
+        font-size: 15px;
+        width: 150px;
+        text-align: center;
+        border: 1px solid #aaa;
+        padding: 10px;
+        border-radius: 5px;
+        background: #007acb;
+        color: #fff;
+        cursor: pointer;
+      }
+      #captureButton:hover{
+        background: #4aa8e2;
+      }
+      #ctn {
+        display: inline-block;
+      }
+    </style>
+  </head>
+  <body>
+
+    <div id="ctn">
+      <div>
+        <span class="l">Whitespace</span>
+        <span><input type="number" min="0" value="0" name="top" id="paddingTop"></span>
+        <span class="right">Color <input type="color" value="#ffffff" id="paddingColor"></span>
+      </div>
+
+      <div>
+        <span><input type="number" min="0" value="0" name="left" id="paddingLeft"></span>
+        <span><button id="captureButton">CAPTURE</button></span>
+        <span><input type="number" min="0" value="0" name="right" id="paddingRight"></span>
+      </div>
+
+      <div>
+        <span class="l">&nbsp;</span>
+        <span><input type="number" min="0" value="0" name="bottom" id="paddingBottom"></span>
+      </div>
+    </div>
+
+    <script src="./control.panel.js"></script>
+
+  </body>
+</html>

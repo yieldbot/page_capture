@@ -33,6 +33,8 @@
     }
   ],
   "web_accessible_resources": [
-    "public.api.js"
+    "public.api.js",
+    "control.panel.html",
+    "control.panel.js"
   ]
 }

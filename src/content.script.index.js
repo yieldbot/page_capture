@@ -9,6 +9,10 @@
 
 (function() {
   var manifest = chrome.runtime.getManifest();
+  var _controlPanel = null;
+  var _imageContainer = null;
+  var _message = null;
+  var _sendResponse = null;
 
   /**
    *
@@ -66,29 +70,89 @@
     }
   };
 
+  /**
+   *
+   * @return {HTMLDivElement}
+   */
   var createControlPanel = function(){
     var panel = document.getElementById('pc-control-panel');
     if(!panel) {
-      panel = document.createElement('div');
+      panel = document.createElement('iframe');
       panel.setAttribute('id', 'pc-control-panel');
+      panel.setAttribute('src', chrome.extension.getURL('control.panel.html'));
       document.body.appendChild(panel);
     }
     panel.style.position = 'fixed';
     panel.style.top = '100px';
     panel.style.right = '10px';
-    panel.style.width = '100px';
-    panel.style.height = '100px';
-    panel.style.background = 'linear-gradient(#ccc, #aaf)';
-    panel.style.border = '2px solid #02aeef';
+    panel.style.width = '250px';
+    panel.style.height = '105px';
+    panel.style.border = '2px solid #aaa';
     panel.style.zIndex = '99999999';
-    panel.style.borderRadius = '50%';
-    panel.style.boxShadow = '0 0 30px 0 #02aeef';
-    panel.style.lineHeight = '100px';
-    panel.style.textAlign = 'center';
-    panel.style.cursor = 'pointer';
-    panel.style.fontWeight = 'bold';
-    panel.innerHTML = 'capture';
+    panel.style.borderRadius = '5px';
+    panel.style.boxShadow = '0 0 30px 0 #aaa';
     return panel;
+  };
+
+  var applyPadding = function(data){
+    if(_imageContainer && data.direction){
+      var pos;
+      if(data.direction === 'top'){
+        pos = 'borderTopWidth';
+      }
+      if(data.direction === 'left'){
+        pos = 'borderLeftWidth';
+      }
+      if(data.direction === 'right'){
+        pos = 'borderRightWidth';
+      }
+      if(data.direction === 'bottom'){
+        pos = 'borderBottomWidth';
+      }
+      _imageContainer.style[pos] = data.value + 'px';
+    }
+  };
+
+  var applyPaddingColor = function(data){
+    if(_imageContainer && data.value){
+      _imageContainer.style.borderColor = data.value;
+    }
+  };
+
+  var captureBtnHandler = function(){
+    if(!_controlPanel){
+      return;
+    }
+
+    _controlPanel.style.display = 'none';
+    var info = null;
+    if(_imageContainer && _message.imgUrl) {
+      info = {};
+      if (!_message.includeOverlay) {
+        _imageContainer.style.display = 'none';
+      }
+      info.url = location.href;
+      info.overlay = _imageContainer.dataset;
+
+      // add the borderTopWidth to overlay.top
+      info.overlay.top = parseInt(info.overlay.top) + parseInt(_imageContainer.style.borderTopWidth);
+      // add the borderLeftWidth to overlay.left
+      info.overlay.left = parseInt(info.overlay.left) + parseInt(_imageContainer.style.borderLeftWidth);
+
+      info.overlay.url = _message.imgUrl;
+      delete info.overlay.pcType;
+    }
+    setTimeout(function() {
+      chrome.runtime.sendMessage({api: 'screenCapture'}, function(responseData) {
+        if(info){
+          responseData.info = info;
+          _sendResponse(responseData);
+        } else {
+          _sendResponse(responseData.img);
+        }
+        return true;
+      });
+    }, 500);
   };
 
   // listen to messages from clients using the the public api's
@@ -106,8 +170,6 @@
       };
       window.postMessage(opt, '*');
     };
-
-    //console.log('page_capture api', data.api);
 
     if (data.api === 'getVersion') {
       send(manifest.version);
@@ -140,55 +202,39 @@
         return true;
       });
     }
+
+    // api calls from the control panel iframe
+    else if(data.api === '_padding'){
+      applyPadding(data);
+    }
+    else if(data.api === '_paddingColor'){
+      applyPaddingColor(data);
+    }
+
+    else if(data.api === '_capture'){
+      captureBtnHandler();
+    }
+
   });
 
   // listens for messages from the background script
   chrome.extension.onMessage.addListener(function (message, sender, sendResponse) {
     if (message.option === 'addControls') {
-      var panel = createControlPanel();
+      _message = message;
+      _sendResponse = sendResponse;
+      _controlPanel = createControlPanel();
 
       if(message.imgUrl){
         var img = new Image();
+        _imageContainer = document.createElement('div');
+        _imageContainer.style.border = '0 solid #fff';
         img.onload = function(){
-          img.style.width = img.naturalWidth + 'px';
-          img.style.height = img.naturalHeight + 'px';
-          window.__pc_draggable(img);
+          _imageContainer.style.minWidth = img.naturalWidth + 'px';
+          _imageContainer.style.minHeight = img.naturalHeight + 'px';
+          window.__pc_draggable(_imageContainer, img.naturalWidth, img.naturalHeight);
         };
         img.src = message.imgUrl;
-      }
-
-      var onClick = function(e) {
-        e.preventDefault();
-        document.getElementById('pc-control-panel').style.display = 'none';
-        var info = null;
-        if(message.imgUrl) {
-          info = {};
-          if (!message.includeOverlay) {
-            img.style.display = 'none';
-          }
-          info.url = location.href;
-          info.overlay = img.dataset;
-          info.overlay.url = message.imgUrl;
-          delete info.overlay.pcType;
-        }
-        setTimeout(function() {
-          chrome.runtime.sendMessage({api: 'screenCapture'}, function(responseData) {
-            if(info){
-              responseData.info = info;
-              sendResponse(responseData);
-            } else {
-              sendResponse(responseData.img);
-            }
-            return true;
-          });
-        }, 500);
-      };
-
-      var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-      if (isMobile) {
-        panel.addEventListener('touchend', onClick, false);
-      } else {
-        panel.addEventListener('click', onClick, false);
+        _imageContainer.appendChild(img);
       }
     }
     // all for asynchronously response
