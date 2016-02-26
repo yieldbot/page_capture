@@ -19,6 +19,7 @@
 //    log that versions are different
 
 var request = require('request');
+var cmp = require('semver-compare');
 var pkgVersion = require('./package.json').version;
 var manifestVersion = require('./src/manifest.json').version;
 
@@ -37,10 +38,6 @@ for (var p in oauth) {
 var postConfig = {
   url: 'https://www.googleapis.com/oauth2/v3/token?' + fields,
   json: true
-};
-
-var versionToNumber = function(version) {
-  return Number(('' + version).replace(/[^0-9]/g, ''));
 };
 
 //https://developer.chrome.com/webstore/webstore_api/items/get
@@ -89,7 +86,7 @@ if (pkgVersion !== manifestVersion) {
     } else {
       try {
         getManifestInfo(body.access_token, function(version) {
-          if (versionToNumber(manifestVersion) > versionToNumber(version)) {
+          if (cmp(manifestVersion, version)) {
             console.log(manifestVersion, '>', version);
             process.exit();
           } else {
