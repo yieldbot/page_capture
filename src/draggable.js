@@ -45,16 +45,15 @@
     }
 
     divElement.style.position = 'absolute';
+    divElement.style.overflow = 'auto';
     divElement.style.top = top;
     divElement.style.left = left;
     divElement.style.cursor = 'move';
-    divElement.style.zIndex = '999999999';
+    divElement.style.zIndex = '9999999';
     divElement.setAttribute('data-pc-type', 'overlay');
     divElement.setAttribute('data-top', parseInt(top));
     divElement.setAttribute('data-left', parseInt(left));
     divElement.setAttribute('data-size', size);
-    //divElement.setAttribute('data-width', width);
-    //divElement.setAttribute('data-height', height);
 
     return document.body.appendChild(divElement);
   };

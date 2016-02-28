@@ -231,6 +231,11 @@
         img.onload = function(){
           _imageContainer.style.minWidth = img.naturalWidth + 'px';
           _imageContainer.style.minHeight = img.naturalHeight + 'px';
+          img.style.width = img.naturalWidth + 'px';
+          img.style.maxWidth = img.naturalWidth + 'px';
+          img.style.float = 'left';
+          img.style.height = img.naturalHeight + 'px';
+          img.style.maxHeight = img.naturalHeight + 'px';
           window.__pc_draggable(_imageContainer, img.naturalWidth, img.naturalHeight);
         };
         img.src = message.imgUrl;
