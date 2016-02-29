@@ -10,6 +10,7 @@
 (function() {
   var manifest = chrome.runtime.getManifest();
   var _controlPanel = null;
+  var _image = null;
   var _imageContainer = null;
   var _message = null;
   var _sendResponse = null;
@@ -133,11 +134,8 @@
       }
       info.url = location.href;
       info.overlay = _imageContainer.dataset;
-
-      // add the borderTopWidth to overlay.top
-      info.overlay.top = parseInt(info.overlay.top) + parseInt(_imageContainer.style.borderTopWidth);
-      // add the borderLeftWidth to overlay.left
-      info.overlay.left = parseInt(info.overlay.left) + parseInt(_imageContainer.style.borderLeftWidth);
+      info.overlay.top = _image.getBoundingClientRect().top;
+      info.overlay.left = _image.getBoundingClientRect().left;
 
       info.overlay.url = _message.imgUrl;
       delete info.overlay.pcType;
@@ -225,21 +223,21 @@
       _controlPanel = createControlPanel();
 
       if(message.imgUrl){
-        var img = new Image();
+        _image = new Image();
         _imageContainer = document.createElement('div');
         _imageContainer.style.border = '0 solid #fff';
-        img.onload = function(){
-          _imageContainer.style.minWidth = img.naturalWidth + 'px';
-          _imageContainer.style.minHeight = img.naturalHeight + 'px';
-          img.style.width = img.naturalWidth + 'px';
-          img.style.maxWidth = img.naturalWidth + 'px';
-          img.style.float = 'left';
-          img.style.height = img.naturalHeight + 'px';
-          img.style.maxHeight = img.naturalHeight + 'px';
-          window.__pc_draggable(_imageContainer, img.naturalWidth, img.naturalHeight);
+        _image.onload = function(){
+          _imageContainer.style.minWidth = _image.naturalWidth + 'px';
+          _imageContainer.style.minHeight = _image.naturalHeight + 'px';
+          _image.style.width = _image.naturalWidth + 'px';
+          _image.style.maxWidth = _image.naturalWidth + 'px';
+          _image.style.float = 'left';
+          _image.style.height = _image.naturalHeight + 'px';
+          _image.style.maxHeight = _image.naturalHeight + 'px';
+          window.__pc_draggable(_imageContainer, _image.naturalWidth, _image.naturalHeight);
         };
-        img.src = message.imgUrl;
-        _imageContainer.appendChild(img);
+        _image.src = message.imgUrl;
+        _imageContainer.appendChild(_image);
       }
     }
     // all for asynchronously response
