@@ -134,8 +134,8 @@
       }
       info.url = location.href;
       info.overlay = _imageContainer.dataset;
-      info.overlay.top = _image.getBoundingClientRect().top;
-      info.overlay.left = _image.getBoundingClientRect().left;
+      info.overlay.top = Math.ceil(_image.getBoundingClientRect().top);
+      info.overlay.left = Math.ceil(_image.getBoundingClientRect().left);
 
       info.overlay.url = _message.imgUrl;
       delete info.overlay.pcType;
