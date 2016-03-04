@@ -153,8 +153,7 @@
         };
 
         if(responseData.zoomFactor !== 0) {
-          var offset = document.body.getBoundingClientRect();
-          crop(responseData.img, offset.left, offset.top, window.innerWidth, window.innerHeight, responseData.zoomFactor, function(croppedImg){
+          crop(responseData.img, 0, 0, window.innerWidth, window.innerHeight, responseData.zoomFactor, function(croppedImg){
             responseData.img = croppedImg;
             _send();
           });
