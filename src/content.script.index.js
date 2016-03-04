@@ -142,12 +142,26 @@
     }
     setTimeout(function() {
       chrome.runtime.sendMessage({api: 'screenCapture'}, function(responseData) {
-        if(info){
-          responseData.info = info;
-          _sendResponse(responseData);
+
+        var _send = function(){
+          if(info){
+            responseData.info = info;
+            _sendResponse(responseData);
+          } else {
+            _sendResponse(responseData.img);
+          }
+        };
+
+        if(responseData.zoomFactor !== 0) {
+          var offset = document.body.getBoundingClientRect();
+          crop(responseData.img, offset.left, offset.top, offset.width, offset.height, responseData.zoomFactor, function(croppedImg){
+            responseData.img = croppedImg;
+            _send();
+          });
         } else {
-          _sendResponse(responseData.img);
+          _send();
         }
+
         return true;
       });
     }, 500);
