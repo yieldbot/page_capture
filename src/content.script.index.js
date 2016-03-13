@@ -139,7 +139,6 @@
       info.overlay.url = _message.imgUrl;
 
       delete info.overlay.pcType;
-      delete info.overlay.size;
     }
     setTimeout(function() {
       chrome.runtime.sendMessage({api: 'screenCapture'}, function(responseData) {
