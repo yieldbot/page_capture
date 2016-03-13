@@ -55,7 +55,7 @@
 
   paddingColor.oninput = colorInputHandler;
 
-  var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+  var isMobile = /iPhone|iPad|iPod|Android|BB10|Mobile/i.test(navigator.userAgent);
   if (isMobile) {
     captureButton.addEventListener('touchend', onClickHandler, false);
   } else {

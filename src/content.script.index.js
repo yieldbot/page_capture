@@ -136,9 +136,10 @@
       info.overlay = _imageContainer.dataset;
       info.overlay.top = Math.ceil(_image.getBoundingClientRect().top);
       info.overlay.left = Math.ceil(_image.getBoundingClientRect().left);
-
       info.overlay.url = _message.imgUrl;
+
       delete info.overlay.pcType;
+      delete info.overlay.size;
     }
     setTimeout(function() {
       chrome.runtime.sendMessage({api: 'screenCapture'}, function(responseData) {
@@ -152,7 +153,8 @@
           }
         };
 
-        if(responseData.zoomFactor !== 0) {
+        var isMobile = /iPhone|iPad|iPod|Android|BB10|Mobile/i.test(navigator.userAgent);
+        if(!isMobile && responseData.zoomFactor !== 0) {
           crop(responseData.img, 0, 0, window.innerWidth, window.innerHeight, responseData.zoomFactor, function(croppedImg){
             responseData.img = croppedImg;
             _send();
