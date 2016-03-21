@@ -62,4 +62,13 @@
     captureButton.addEventListener('click', onClickHandler, false);
   }
 
+  if(location.hash === '#false'){
+    document.querySelector('#ctn').style.display = 'block';
+    document.querySelector('#btn-ctn').style.textAlign = 'center';
+    var elements = document.querySelectorAll('.img-contols');
+    for(var i=0; i<elements.length; i++){
+      elements[i].style.display = 'none';
+    }
+  }
+
 })();

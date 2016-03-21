@@ -75,19 +75,19 @@
    *
    * @return {HTMLDivElement}
    */
-  var createControlPanel = function(){
+  var createControlPanel = function(hasImg){
     var panel = document.getElementById('pc-control-panel');
     if(!panel) {
       panel = document.createElement('iframe');
       panel.setAttribute('id', 'pc-control-panel');
-      panel.setAttribute('src', chrome.extension.getURL('control.panel.html'));
+      panel.setAttribute('src', chrome.extension.getURL('control.panel.html#'+hasImg));
       document.body.appendChild(panel);
     }
     panel.style.position = 'fixed';
     panel.style.top = '100px';
     panel.style.right = '10px';
     panel.style.width = '250px';
-    panel.style.height = '105px';
+    panel.style.height = !hasImg ? '50px' : '105px';
     panel.style.border = '2px solid #aaa';
     panel.style.zIndex = '99999999';
     panel.style.borderRadius = '5px';
@@ -232,36 +232,41 @@
   // listens for messages from the background script
   chrome.extension.onMessage.addListener(function (message, sender, sendResponse) {
     if (message.option === 'addControls') {
-      _message = message;
-      _sendResponse = sendResponse;
-      _controlPanel = createControlPanel();
+      document.addEventListener('DOMContentLoaded', function() {
+        _message = message;
+        _sendResponse = sendResponse;
+        _controlPanel = createControlPanel(!!message.imgUrl);
 
-      if(message.imgUrl){
-        _image = new Image();
-        _imageContainer = document.createElement('div');
-        _imageContainer.style.border = '0 solid #fff';
-        _image.onload = function(){
-          _imageContainer.style.minWidth = _image.naturalWidth + 'px';
-          _imageContainer.style.minHeight = _image.naturalHeight + 'px';
-          _image.style.width = _image.naturalWidth + 'px';
-          _image.style.maxWidth = _image.naturalWidth + 'px';
-          _image.style.float = 'left';
-          _image.style.height = _image.naturalHeight + 'px';
-          _image.style.maxHeight = _image.naturalHeight + 'px';
-          window.__pc_draggable(_imageContainer, _image.naturalWidth, _image.naturalHeight);
-        };
-        _image.src = message.imgUrl;
-        _imageContainer.appendChild(_image);
-      }
+        if (message.imgUrl) {
+          _image = new Image();
+          _imageContainer = document.createElement('div');
+          _imageContainer.style.border = '0 solid #fff';
+          _image.onload = function() {
+            _imageContainer.style.minWidth = _image.naturalWidth + 'px';
+            _imageContainer.style.minHeight = _image.naturalHeight + 'px';
+            _image.style.width = _image.naturalWidth + 'px';
+            _image.style.maxWidth = _image.naturalWidth + 'px';
+            _image.style.float = 'left';
+            _image.style.height = _image.naturalHeight + 'px';
+            _image.style.maxHeight = _image.naturalHeight + 'px';
+            window.__pc_draggable(_imageContainer, _image.naturalWidth, _image.naturalHeight);
+          };
+          _image.src = message.imgUrl;
+          _imageContainer.appendChild(_image);
+        }
+      });
     }
     // all for asynchronously response
     return true;
   });
 
-  // inject the api script in the current page document
-  var apiScript = document.createElement('script');
-  apiScript.src = chrome.extension.getURL('public.api.js');
-  apiScript.type = 'text/javascript';
-  document.body.appendChild(apiScript);
+  document.addEventListener('DOMContentLoaded', function() {
+    // inject the api script in the current page document
+    var apiScript = document.createElement('script');
+    apiScript.src = chrome.extension.getURL('public.api.js');
+    apiScript.type = 'text/javascript';
+    apiScript.async = true;
+    document.body.appendChild(apiScript);
+  });
 
 })();

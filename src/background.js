@@ -13,8 +13,8 @@ var stack = {};
 
 // listen for any changes to the URL of any tab.
 chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
-  if (activeTab && tab.id === activeTab.id && changeInfo.status === 'complete') {
-    if(stack[activeTab.id]){
+  if (activeTab && tab.id === activeTab.id && changeInfo.status === 'loading') {
+    if(typeof stack[activeTab.id] === 'function'){
       stack[activeTab.id]();
     }
   }
@@ -52,13 +52,12 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
           activeTab = tab;
           stack[tab.id] = function() {
 
-            // adjust the zoom
-            chrome.tabs.setZoom(tab.id, zoomFactor, function() {
-              var opts = request;
-              opts.option = 'addControls';
+            var opts = request;
+            opts.option = 'addControls';
 
-              // tell the content script to add control overlay on the tab that was created
-              chrome.tabs.sendMessage(tab.id, opts, function(response) {
+            // tell the content script to add control overlay on the tab that was created
+            chrome.tabs.sendMessage(tab.id, opts, function(response) {
+              if(response !== undefined) {
 
                 // remove the tab that was created
                 chrome.tabs.remove(activeTab.id, function() {
@@ -68,12 +67,21 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 
                     //send data back to client
                     sendResponse(response);
+                    return true;
                   });
+                  return true;
                 });
-              });
+              }
+              return true;
             });
 
+            // adjust the zoom
+            chrome.tabs.setZoom(tab.id, zoomFactor, function() {
+              return true;
+            });
           };
+
+          return true;
         });
       });
     }
