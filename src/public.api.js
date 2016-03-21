@@ -45,6 +45,7 @@ var PageCapture = {};
     opt.ns = 'page_capture';
     opt.api = api;
     opt.__index = index;
+    opt.__zoomFactor = window.devicePixelRatio;
     callbacks[index] = cb;
 
     window.postMessage(opt, '*');

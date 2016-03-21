@@ -40,34 +40,39 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     else if (request.api === 'captureUrl') {
       // get current tab
       chrome.tabs.query({currentWindow: true, active: true}, function(tabs) {
-        console.log('tabs', tabs);
         parentTabIndex = tabs[0].index;
 
         if(!request.url.match(/^https?\:\/\//)){
           request.url = 'http://' + request.url;
         }
 
+        var zoomFactor = request.__zoomFactor || 1.0;
+
         chrome.tabs.create({url: request.url}, function(tab) {
           activeTab = tab;
           stack[tab.id] = function() {
 
-            var opts = request;
-            opts.option = 'addControls';
+            // adjust the zoom
+            chrome.tabs.setZoom(tab.id, zoomFactor, function() {
+              var opts = request;
+              opts.option = 'addControls';
 
-            // tell the content script to add control overlay on the tab that was created
-            chrome.tabs.sendMessage(tab.id, opts, function(response) {
+              // tell the content script to add control overlay on the tab that was created
+              chrome.tabs.sendMessage(tab.id, opts, function(response) {
 
-              // remove the tab that was created
-              chrome.tabs.remove(activeTab.id, function() {
+                // remove the tab that was created
+                chrome.tabs.remove(activeTab.id, function() {
 
-                // select the tabs that initiated the request
-                chrome.tabs.highlight({tabs: parentTabIndex}, function() {
+                  // select the tabs that initiated the request
+                  chrome.tabs.highlight({tabs: parentTabIndex}, function() {
 
-                  //send data back to client
-                  sendResponse(response);
+                    //send data back to client
+                    sendResponse(response);
+                  });
                 });
               });
             });
+
           };
         });
       });
