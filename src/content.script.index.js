@@ -215,10 +215,18 @@
       });
     }
 
+    else if(data.api === 'adjustZoomFactor'){
+      chrome.runtime.sendMessage(data, function(res) {
+        send(res);
+        return true;
+      });
+    }
+
     // api calls from the control panel iframe
     else if(data.api === '_padding'){
       applyPadding(data);
     }
+
     else if(data.api === '_paddingColor'){
       applyPaddingColor(data);
     }

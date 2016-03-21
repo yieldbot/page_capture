@@ -48,6 +48,7 @@ var PageCapture = {};
     opt.__zoomFactor = window.devicePixelRatio;
     callbacks[index] = cb;
 
+    // send message to content.script.index.js
     window.postMessage(opt, '*');
     index++;
   };
@@ -166,6 +167,18 @@ var PageCapture = {};
       includeOverlay: includeOverlay
     };
     send('captureUrl', opt, cb);
+  };
+
+  /**
+   *
+   * @param {Number} zoomFactor
+   * @param {function} cb
+   */
+  PageCapture.adjustZoomFactor = function(zoomFactor, cb){
+    var opt = {
+      zoomFactor: parseFloat(zoomFactor) || 1,
+    };
+    send('adjustZoomFactor', opt, cb);
   };
 
   // process the queue

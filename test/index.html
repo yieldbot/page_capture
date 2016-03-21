@@ -53,6 +53,13 @@
           <td><button disabled id="pc_page">run</button></td>
         </tr>
         <tr>
+          <td>adjustZoomFactor</td>
+          <td>
+            adjustZoomFactor: <input type="number" id="adjustZoomFactor" value="1" step=".10" min=".25" max="2"><br>
+            <button disabled id="pc_adjustZoomFactor">run</button>
+          </td>
+        </tr>
+        <tr>
           <td>captureUrl</td>
           <td>
             url: <input type="text" id="url" placeholder="http://"><br>
@@ -145,6 +152,14 @@
           PageCapture.captureUrl(url, function(img) {
             console.log(arguments);
             result.innerHTML = '<img src="' + img + '">';
+          });
+        };
+
+        document.getElementById('pc_adjustZoomFactor').disabled = false;
+        document.getElementById('pc_adjustZoomFactor').onclick = function() {
+          var zoomFactor = document.getElementById('adjustZoomFactor').value;
+          PageCapture.adjustZoomFactor(zoomFactor, function(res) {
+            console.log('>>>', res);
           });
         };
 

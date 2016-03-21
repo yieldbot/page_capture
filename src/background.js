@@ -85,6 +85,19 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
         });
       });
     }
+
+    else if(request.api === 'adjustZoomFactor'){
+      // get current tab
+      chrome.tabs.query({currentWindow: true, active: true}, function(tabs) {
+        // adjust the zoom
+        chrome.tabs.setZoom(tabs[0].id, request.zoomFactor, function() {
+          sendResponse(request.zoomFactor);
+          return true;
+        });
+        return true;
+      });
+    }
+
   }
   // all for asynchronously response
   return true;
