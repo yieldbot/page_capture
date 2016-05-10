@@ -3,6 +3,7 @@
   "description": "Capture page screenshots from within your Web Application.",
   "version": "0.1.12",
   "manifest_version": 2,
+  "minimum_chrome_version": "50.0",
   "author": "Andrei McMillan <amcmillan@yieldbot.com>",
   "icons": {
     "32": "logo.png",
