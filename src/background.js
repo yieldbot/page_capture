@@ -26,9 +26,8 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
   if (sender.tab) {
     if (request.api === 'screenCapture') {
       var options = {
-        //format: 'jpeg',
-        //quality: 100
-        format: 'png'
+        format: 'jpeg',
+        quality: 100
       };
       chrome.tabs.captureVisibleTab(options, function(res){
         chrome.tabs.getZoom(function(zoomFactor){
@@ -83,6 +82,20 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 
           return true;
         });
+      });
+    }
+
+    else if(request.api === 'getZoomFactor'){
+      chrome.tabs.getZoom(sendResponse);
+    }
+
+    else if(request.api === 'disableZoom'){
+      chrome.tabs.query({currentWindow: true, active: true}, function(tabs) {
+        chrome.tabs.setZoomSettings(tabs[0].id, {
+          mode: 'disabled',
+          defaultZoomFactor: 1.0
+        }, sendResponse);
+        return true;
       });
     }
 

@@ -19,7 +19,9 @@ var PageCapture = {};
   // listen to messages from the content script
   window.addEventListener('message', function (event) {
     if (event.data.__key && typeof callbacks[event.data.__key] === 'function') {
-      callbacks[event.data.__key](event.data.value);
+      if(Boolean(event.data.value) || Boolean(event.data.error)){
+        callbacks[event.data.__key](event.data.value, event.data.error);
+      }
     }
   });
 
@@ -48,9 +50,13 @@ var PageCapture = {};
     opt.__zoomFactor = window.devicePixelRatio;
     callbacks[index] = cb;
 
-    // send message to content.script.index.js
-    window.postMessage(opt, '*');
-    index++;
+    try {
+      // send message to content.script.index.js
+      window.postMessage(opt, '*');
+      index++;
+    } catch(e){
+      callbacks[index](null, e.stack);
+    }
   };
 
   /**

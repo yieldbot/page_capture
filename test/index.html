@@ -108,7 +108,8 @@
 
         document.getElementById('get_version').disabled = false;
         document.getElementById('get_version').onclick = function() {
-          PageCapture.getVersion(function(v) {
+          PageCapture.getVersion(function(v, e) {
+            console.log('e', e);
             result.innerHTML = 'version = ' + v;
           });
         };
@@ -176,9 +177,9 @@
 
       });
 
-      if (chrome && chrome.app && typeof PageCapture === 'undefined') {
-        document.getElementById('install-btn').style.display = 'block';
-      }
+//      if (chrome && chrome.app && typeof PageCapture === 'undefined') {
+//        document.getElementById('install-btn').style.display = 'block';
+//      }
 
       if (!chrome){
         document.getElementById('options').innerHTML = '<h1>This page will only work in chrome.</h1>';

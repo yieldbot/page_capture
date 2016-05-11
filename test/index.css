@@ -93,4 +93,9 @@ button:hover {
     margin-top: 15px;
     border-radius: 5px;
     background: linear-gradient(#f7f7f7, #cfcfcf);
+    width: 900px;
+}
+
+#result img {
+    max-width: 100%;
 }
