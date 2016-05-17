@@ -15,10 +15,12 @@
   var _message = null;
   var _sendResponse = null;
   var _imgParts = [];
+  var _totalImageHeight = 0;
   var ID = '__pc_container__';
   var TIMEOUT = 400;
   var scrollCounter = 0;
   var overlayRect = {};
+  var overlayContainerRect = {};
 
   /**
    *
@@ -57,12 +59,12 @@
 
   /**
    *
-   * @param {string} selectors
+   * @param {string} element
    * @param {function} callback
    * @return {undefined}
    */
-  var screenCaptureHandler = function(selectors, callback) {
-    var target = document.querySelector(selectors);
+  var captureElement = function(element, callback) {
+    var target = document.querySelector(element);
 
     if (!target) {
       callback(null);
@@ -72,7 +74,7 @@
         chrome.runtime.sendMessage({api: 'screenCapture'}, function(data) {
           crop(data.img, offset.left, offset.top, offset.width, offset.height, data.zoomFactor, callback);
         });
-      }, 400);
+      }, TIMEOUT);
     }
   };
 
@@ -200,7 +202,12 @@
     hideFixedElements(function() {
       chrome.runtime.sendMessage({api: 'screenCapture'}, function(responseData) {
         _imgParts.push(responseData.img);
-        cb();
+        var _imgEl = new Image();
+        _imgEl.onload = function(){
+          _totalImageHeight += _imgEl.height;
+          cb();
+        };
+        _imgEl.src = responseData.img;
         return true;
       });
     });
@@ -278,7 +285,7 @@
     var canvas = document.createElement('canvas');
     var canvasContext = canvas.getContext('2d');
     canvas.width = window.innerWidth;
-    canvas.height = _imgParts.length * window.innerHeight;
+    canvas.height = _totalImageHeight;
     var y = 0;
     var counter = 0;
 
@@ -307,13 +314,28 @@
             delete info.overlay.pcType;
           }
 
-          if(info){
-            _sendResponse({
-              info: info,
-              img: imgData
+          var _done = function() {
+            if(info){
+              _sendResponse({
+                info: info,
+                img: imgData
+              });
+            } else {
+              _sendResponse(imgData);
+            }
+          };
+
+          if(scrollCounter){
+            var _h = (overlayContainerRect.bottom + 250);
+            if(_h > _totalImageHeight){
+              _h = _totalImageHeight;
+            }
+            crop(imgData, 0, 0, window.innerWidth, _h, 1, function(_imgData) {
+              imgData = _imgData;
+              _done();
             });
           } else {
-            _sendResponse(imgData);
+            _done();
           }
 
         }
@@ -332,6 +354,7 @@
       return;
     }
 
+    overlayContainerRect = _imageContainer.getBoundingClientRect();
     overlayRect = _image.getBoundingClientRect();
     addSpacer();
 
@@ -345,7 +368,6 @@
       }
     });
   };
-
 
   // listen to messages from clients using the the public api's
   window.addEventListener('message', function(event) {
@@ -363,12 +385,15 @@
       window.postMessage(opt, '*');
     };
 
+    _totalImageHeight = 0;
+    scrollCounter = 0;
+
     if (data.api === 'getVersion') {
       send(manifest.version);
     }
 
     else if (data.api === 'captureElement') {
-      screenCaptureHandler(data.element, function(data) {
+      captureElement(data.element, function(data) {
         send(data);
         return true;
       });
