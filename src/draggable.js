@@ -71,12 +71,21 @@
     y_elem = y_pos - selected.offsetTop;
   }
 
+  /**
+   *
+   * @param {HTMLElement} el
+   * @param {Number} top
+   * @param {Number} left
+   */
   var updatePosition = function(el, top, left){
     if (el) {
       top = parseInt(top);
       left = parseInt(left);
-      el.style.top = top + 'px';
-      el.style.left = left + 'px';
+      top = (top < 0 ? 0 : top) + 'px';
+      left = (left < 0 ? 0 : left) + 'px';
+
+      el.style.top = top;
+      el.style.left = left;
       el.style.opacity = 0.5;
       el.setAttribute('data-top', top);
       el.setAttribute('data-left', left);
@@ -120,8 +129,10 @@
     var top = parseFloat(el.dataset.top) + deltaY;
     var left = parseFloat(el.dataset.left) + deltaX;
 
-    el.style.top = top + 'px';
-    el.style.left = left + 'px';
+    top = (top < 0 ? 0 : top) + 'px';
+    left = (left < 0 ? 0 : left) + 'px';
+    el.style.top = top;
+    el.style.left = left;
   };
 
   /**
@@ -153,8 +164,6 @@
         left--;
       }
 
-      top = (top < 0 ? 0 : top) + 'px';
-      left = (left < 0 ? 0 : left) + 'px';
       updatePosition(overlay, top, left);
     }
   };
