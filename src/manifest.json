@@ -1,7 +1,7 @@
 {
   "name": "Page Capture (by Yieldbot)",
   "description": "Capture page screenshots from within your Web Application.",
-  "version": "0.2.14",
+  "version": "0.2.15",
   "manifest_version": 2,
   "minimum_chrome_version": "50.0",
   "author": "Andrei McMillan <amcmillan@yieldbot.com>",
