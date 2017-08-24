@@ -12,6 +12,7 @@ http://yieldbot.github.io/page_capture/
 - `getVersion(cb)`: get the version number
 - `capturePage(cb)`: capture the entire page of a given url
 - `captureElement(elementId, cb)`: capture an element on a given url
+- `captureElementWithOffset(elementId, extraLeft, extraTop, cb)`: capture an element with extra offset on a given url
 - `captureSection(x, y, width, height, cb)`: capture a section a given url
 - `captureImage(imgUrl, width, height, cb)`: capture an external image
 - `captureUrl(url, cb)`: capture an external page

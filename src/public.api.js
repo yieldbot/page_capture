@@ -80,6 +80,20 @@ var PageCapture = {};
   };
 
   /**
+   * take snapshots of elements on a given url
+   * @param {string} element
+   * @param {function} cb
+   */
+  PageCapture.captureElementWithOffset = function (element, extraLeft, extraTop, cb) {
+    var opt = {
+      element: element, 
+      extraLeft: extraLeft,
+      extraTop: extraTop
+    };
+    send('captureElementWithOffset', opt, cb);
+  };
+
+  /**
    * take snapshots of a given url
    * @param {function} cb
    */

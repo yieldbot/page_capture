@@ -80,6 +80,29 @@
 
   /**
    *
+   * @param {string} element
+   * @param {number} extraLeft
+   * @param {number} extraTop
+   * @param {function} callback
+   * @return {undefined}
+   */
+  var captureElementWithOffset = function(element, extraLeft, extraTop, callback) {
+    var target = document.querySelector(element);
+
+    if (!target) {
+      callback(null);
+    } else {
+      setTimeout(function() {
+        var offset = target.getBoundingClientRect();
+        chrome.runtime.sendMessage({api: 'screenCapture'}, function(data) {
+          crop(data.img, offset.left + extraLeft, offset.top + extraTop, offset.width, offset.height, data.zoomFactor, callback);
+        });
+      }, TIMEOUT);
+    }
+  };
+
+  /**
+   *
    * @return {HTMLDivElement}
    */
   var createControlPanel = function(hasImg){
@@ -394,6 +417,13 @@
 
     else if (data.api === 'captureElement') {
       captureElement(data.element, function(data) {
+        send(data);
+        return true;
+      });
+    }
+
+    else if(data.api === 'captureElementWithOffset') {
+      captureElementWithOffset(data.element, data.extraLeft, data.extraTop, function(data) {
         send(data);
         return true;
       });
